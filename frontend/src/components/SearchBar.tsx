@@ -1,28 +1,15 @@
 import React, { useState } from 'react';
-import { Search, Sparkles, Navigation, Layers } from 'lucide-react';
-import { ParsedIntent, Scenario } from '../types';
+import { Search, Sparkles } from 'lucide-react';
+import { ParsedIntent } from '../types';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
-  onSelectScenario: (scenario: Scenario) => void;
-  scenarios: Scenario[];
-  activeScenarioId: string;
   parsedIntent: ParsedIntent | null;
   isLoading: boolean;
 }
 
-const EXAMPLE_QUERIES = [
-  "Find new buildings in Bengaluru tech corridor",
-  "Deforestation along Western Ghats reserve",
-  "Reservoir water shrinkage at Osmansagar",
-  "Highway infrastructure on Yamuna expressway"
-];
-
 export const SearchBar: React.FC<SearchBarProps> = ({
   onSearch,
-  onSelectScenario,
-  scenarios,
-  activeScenarioId,
   parsedIntent,
   isLoading
 }) => {
@@ -33,11 +20,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     if (query.trim()) {
       onSearch(query.trim());
     }
-  };
-
-  const handlePromptClick = (prompt: string) => {
-    setQuery(prompt);
-    onSearch(prompt);
   };
 
   return (
@@ -73,39 +55,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           </span>
         </div>
       )}
-
-      <div className="scenarios-row">
-        <span className="scenarios-label">Demo Scenarios:</span>
-        {scenarios.map((scn) => {
-          const isActive = scn.scenario_id === activeScenarioId;
-          return (
-            <button
-              key={scn.scenario_id}
-              type="button"
-              className={`scenario-chip ${isActive ? 'active' : ''}`}
-              onClick={() => onSelectScenario(scn)}
-            >
-              <Navigation size={13} />
-              <span>{scn.title}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      <div className="scenarios-row" style={{ marginTop: '0.2rem' }}>
-        <span className="scenarios-label">Try Asking:</span>
-        {EXAMPLE_QUERIES.map((q, idx) => (
-          <button
-            key={idx}
-            type="button"
-            className="scenario-chip"
-            style={{ fontSize: '0.78rem', background: 'transparent' }}
-            onClick={() => handlePromptClick(q)}
-          >
-            "{q}"
-          </button>
-        ))}
-      </div>
     </section>
   );
 };

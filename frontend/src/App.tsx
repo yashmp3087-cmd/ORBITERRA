@@ -307,12 +307,9 @@ export const App: React.FC = () => {
       <Navbar stats={stats} />
 
       <main className="dashboard-main">
-        {/* Search & Scenario Selection */}
+        {/* Search Input Bar */}
         <SearchBar
           onSearch={handleSearch}
-          onSelectScenario={handleSelectScenario}
-          scenarios={scenarios}
-          activeScenarioId={activeScenario?.scenario_id || ''}
           parsedIntent={parsedIntent}
           isLoading={isLoading}
         />
@@ -325,18 +322,6 @@ export const App: React.FC = () => {
               <span>{searchNotice.message}</span>
             </div>
             <div className="search-notice-actions">
-              {scenarios.length > 0 && (
-                <button
-                  type="button"
-                  className="search-notice-btn"
-                  onClick={() => {
-                    handleSelectScenario(scenarios[0]);
-                    setSearchNotice(null);
-                  }}
-                >
-                  View Sample Demo (Bengaluru)
-                </button>
-              )}
               <button
                 type="button"
                 className="search-notice-close"
