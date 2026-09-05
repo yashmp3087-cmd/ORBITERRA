@@ -1,0 +1,243 @@
+{
+  "scenes": [
+    {
+      "id": "IMG_BLR_2021",
+      "location_id": "LOC_BLR",
+      "area_name": "Bengaluru East Tech Corridor, Karnataka",
+      "capture_date": "2021-03-15",
+      "latitude": 12.9716,
+      "longitude": 77.7289,
+      "resolution_m": 10.0,
+      "image_filename": "bengaluru_urban_2021.png",
+      "bbox": [
+        12.96,
+        77.715,
+        12.983,
+        77.742
+      ],
+      "tags": [
+        "urban",
+        "construction",
+        "bengaluru",
+        "buildings",
+        "tech park",
+        "open land"
+      ],
+      "period": "T1 (Before)"
+    },
+    {
+      "id": "IMG_BLR_2024",
+      "location_id": "LOC_BLR",
+      "area_name": "Bengaluru East Tech Corridor, Karnataka",
+      "capture_date": "2024-03-20",
+      "latitude": 12.9716,
+      "longitude": 77.7289,
+      "resolution_m": 10.0,
+      "image_filename": "bengaluru_urban_2024.png",
+      "bbox": [
+        12.96,
+        77.715,
+        12.983,
+        77.742
+      ],
+      "tags": [
+        "urban",
+        "construction",
+        "bengaluru",
+        "new buildings",
+        "industrial park",
+        "built-up"
+      ],
+      "period": "T2 (After)"
+    },
+    {
+      "id": "IMG_WG_2020",
+      "location_id": "LOC_WG",
+      "area_name": "Western Ghats Ecological Reserve, Kerala",
+      "capture_date": "2020-11-10",
+      "latitude": 10.452,
+      "longitude": 76.883,
+      "resolution_m": 10.0,
+      "image_filename": "western_ghats_forest_2020.png",
+      "bbox": [
+        10.44,
+        76.87,
+        10.464,
+        76.896
+      ],
+      "tags": [
+        "forest",
+        "trees",
+        "dense vegetation",
+        "river",
+        "biodiversity",
+        "canopy"
+      ],
+      "period": "T1 (Before)"
+    },
+    {
+      "id": "IMG_WG_2024",
+      "location_id": "LOC_WG",
+      "area_name": "Western Ghats Ecological Reserve, Kerala",
+      "capture_date": "2024-01-22",
+      "latitude": 10.452,
+      "longitude": 76.883,
+      "resolution_m": 10.0,
+      "image_filename": "western_ghats_forest_2024.png",
+      "bbox": [
+        10.44,
+        76.87,
+        10.464,
+        76.896
+      ],
+      "tags": [
+        "forest",
+        "deforestation",
+        "clearing",
+        "vegetation loss",
+        "timber",
+        "bare land"
+      ],
+      "period": "T2 (After)"
+    },
+    {
+      "id": "IMG_OSM_2021",
+      "location_id": "LOC_OSM",
+      "area_name": "Osmansagar Freshwater Reservoir, Telangana",
+      "capture_date": "2021-09-28",
+      "latitude": 17.3871,
+      "longitude": 78.2982,
+      "resolution_m": 10.0,
+      "image_filename": "osmansagar_water_2021.png",
+      "bbox": [
+        17.375,
+        78.285,
+        17.399,
+        78.311
+      ],
+      "tags": [
+        "water",
+        "reservoir",
+        "lake",
+        "hyderabad",
+        "high capacity",
+        "full reservoir"
+      ],
+      "period": "T1 (Before)"
+    },
+    {
+      "id": "IMG_OSM_2023",
+      "location_id": "LOC_OSM",
+      "area_name": "Osmansagar Freshwater Reservoir, Telangana",
+      "capture_date": "2023-05-14",
+      "latitude": 17.3871,
+      "longitude": 78.2982,
+      "resolution_m": 10.0,
+      "image_filename": "osmansagar_water_2023.png",
+      "bbox": [
+        17.375,
+        78.285,
+        17.399,
+        78.311
+      ],
+      "tags": [
+        "water",
+        "reservoir shrinkage",
+        "drought",
+        "dry lakebed",
+        "water loss"
+      ],
+      "period": "T2 (After)"
+    },
+    {
+      "id": "IMG_EXP_2020",
+      "location_id": "LOC_EXP",
+      "area_name": "Yamuna Expressway Agri-Belt, Uttar Pradesh",
+      "capture_date": "2020-02-18",
+      "latitude": 27.912,
+      "longitude": 77.625,
+      "resolution_m": 10.0,
+      "image_filename": "yamuna_highway_2020.png",
+      "bbox": [
+        27.9,
+        77.612,
+        27.924,
+        77.638
+      ],
+      "tags": [
+        "agriculture",
+        "farmland",
+        "fields",
+        "rural",
+        "pre-highway"
+      ],
+      "period": "T1 (Before)"
+    },
+    {
+      "id": "IMG_EXP_2023",
+      "location_id": "LOC_EXP",
+      "area_name": "Yamuna Expressway Agri-Belt, Uttar Pradesh",
+      "capture_date": "2023-11-05",
+      "latitude": 27.912,
+      "longitude": 77.625,
+      "resolution_m": 10.0,
+      "image_filename": "yamuna_highway_2023.png",
+      "bbox": [
+        27.9,
+        77.612,
+        27.924,
+        77.638
+      ],
+      "tags": [
+        "highway",
+        "road development",
+        "expressway",
+        "infrastructure",
+        "paved transport"
+      ],
+      "period": "T2 (After)"
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SCN_URBAN",
+      "title": "Urban Expansion & Tech Park Construction",
+      "location_name": "Bengaluru East Tech Corridor",
+      "location_id": "LOC_BLR",
+      "image_id_before": "IMG_BLR_2021",
+      "image_id_after": "IMG_BLR_2024",
+      "primary_change_type": "New Construction",
+      "description": "Rapid transformation of peri-urban agricultural land into commercial IT campus with multiple building blocks and paved internal network."
+    },
+    {
+      "scenario_id": "SCN_FOREST",
+      "title": "Vegetation Loss & Ecological Canopy Clearing",
+      "location_name": "Western Ghats Ecological Reserve",
+      "location_id": "LOC_WG",
+      "image_id_before": "IMG_WG_2020",
+      "image_id_after": "IMG_WG_2024",
+      "primary_change_type": "Vegetation Loss",
+      "description": "Deforestation and clear-cutting detected across the eastern ridge bordering the natural stream buffer."
+    },
+    {
+      "scenario_id": "SCN_WATER",
+      "title": "Reservoir Water Surface Depletion",
+      "location_name": "Osmansagar Freshwater Reservoir",
+      "location_id": "LOC_OSM",
+      "image_id_before": "IMG_OSM_2021",
+      "image_id_after": "IMG_OSM_2023",
+      "primary_change_type": "Water Body Shrinkage",
+      "description": "Significant reduction of surface water perimeter due to prolonged dry season, exposing mud flats and dry lakebed."
+    },
+    {
+      "scenario_id": "SCN_HIGHWAY",
+      "title": "Expressway Corridor & Interchange Infrastructure",
+      "location_name": "Yamuna Expressway Agri-Belt",
+      "location_id": "LOC_EXP",
+      "image_id_before": "IMG_EXP_2020",
+      "image_id_after": "IMG_EXP_2023",
+      "primary_change_type": "Road Development",
+      "description": "New 6-lane asphalt expressway cuts diagonally across farmland with cloverleaf interchange structure."
+    }
+  ]
+}
