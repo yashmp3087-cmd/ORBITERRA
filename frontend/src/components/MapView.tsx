@@ -45,6 +45,19 @@ const TILE_LAYERS = {
   }
 };
 
+const LABELS_LAYERS = {
+  boundaries: {
+    name: 'World Boundaries and Places',
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+    attribution: 'Esri Reference'
+  },
+  transportation: {
+    name: 'World Transportation',
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}',
+    attribution: 'Esri Transportation'
+  }
+};
+
 export const MapView: React.FC<MapViewProps> = ({
   bbox,
   center,
@@ -63,6 +76,7 @@ export const MapView: React.FC<MapViewProps> = ({
   const beforeUrl = satelliteImageUrlBefore || '';
   const afterUrl = satelliteImageUrlAfter || satelliteImageUrl || '';
   const hasImageryOverlay = Boolean((beforeUrl && beforeUrl.trim()) || (afterUrl && afterUrl.trim()));
+  const displayLocation = locationName?.trim() ? locationName : 'Pune, Maharashtra';
 
   // Mode: single map or synced dual-map comparison
   const [mapLayout, setMapLayout] = useState<'single' | 'dual'>('single');
@@ -79,12 +93,17 @@ export const MapView: React.FC<MapViewProps> = ({
   const singleGeojsonRef = useRef<L.GeoJSON | null>(null);
   const singleDrawGroupRef = useRef<L.LayerGroup | null>(null);
   const singleBaseTileRef = useRef<L.TileLayer | null>(null);
+  const singleLabelsRef = useRef<L.TileLayer[]>([]);
 
   // Dual Map Refs
   const leftMapContainerRef = useRef<HTMLDivElement>(null);
   const rightMapContainerRef = useRef<HTMLDivElement>(null);
   const leftMapRef = useRef<L.Map | null>(null);
   const rightMapRef = useRef<L.Map | null>(null);
+  const leftBaseTileRef = useRef<L.TileLayer | null>(null);
+  const rightBaseTileRef = useRef<L.TileLayer | null>(null);
+  const leftLabelsRef = useRef<L.TileLayer[]>([]);
+  const rightLabelsRef = useRef<L.TileLayer[]>([]);
   const leftOverlayRef = useRef<L.ImageOverlay | null>(null);
   const rightOverlayRef = useRef<L.ImageOverlay | null>(null);
   const rightGeojsonRef = useRef<L.GeoJSON | null>(null);
@@ -97,6 +116,39 @@ export const MapView: React.FC<MapViewProps> = ({
   const activeRectRef = useRef<L.Rectangle | null>(null);
   const polygonPointsRef = useRef<L.LatLng[]>([]);
   const polygonLineRef = useRef<L.Polyline | null>(null);
+
+  // Helper to ensure custom panes exist for labels and vectors
+  const setupCustomPanes = (map: L.Map) => {
+    if (!map.getPane('labelsPane')) {
+      const labelsPane = map.createPane('labelsPane');
+      labelsPane.style.zIndex = '450';
+      labelsPane.style.pointerEvents = 'none';
+    }
+    if (!map.getPane('geojsonPane')) {
+      const geojsonPane = map.createPane('geojsonPane');
+      geojsonPane.style.zIndex = '500';
+    }
+  };
+
+  // Helper to attach Google-Maps-style place and street labels layer
+  const createLabelsLayers = (map: L.Map, isVisible: boolean): L.TileLayer[] => {
+    const opacity = isVisible ? 1.0 : 0;
+    const bLabels = L.tileLayer(LABELS_LAYERS.boundaries.url, {
+      pane: 'labelsPane',
+      attribution: LABELS_LAYERS.boundaries.attribution,
+      maxZoom: 19,
+      opacity: opacity
+    }).addTo(map);
+
+    const tLabels = L.tileLayer(LABELS_LAYERS.transportation.url, {
+      pane: 'labelsPane',
+      attribution: LABELS_LAYERS.transportation.attribution,
+      maxZoom: 19,
+      opacity: isVisible ? 0.9 : 0
+    }).addTo(map);
+
+    return [bLabels, tLabels];
+  };
 
   // 1. Initialize Single Map
   useEffect(() => {
@@ -113,11 +165,15 @@ export const MapView: React.FC<MapViewProps> = ({
       zoomControl: true
     });
 
+    setupCustomPanes(map);
+
     const baseTile = L.tileLayer(TILE_LAYERS[baseMapType].url, {
       attribution: TILE_LAYERS[baseMapType].attribution,
       maxZoom: 19
     }).addTo(map);
     singleBaseTileRef.current = baseTile;
+
+    singleLabelsRef.current = createLabelsLayers(map, baseMapType === 'esri');
 
     const drawGroup = L.layerGroup().addTo(map);
     singleDrawGroupRef.current = drawGroup;
@@ -127,10 +183,11 @@ export const MapView: React.FC<MapViewProps> = ({
       map.remove();
       singleMapRef.current = null;
       singleBaseTileRef.current = null;
+      singleLabelsRef.current = [];
     };
   }, [mapLayout]);
 
-  // 2. Initialize Dual Maps (Synced Pan & Zoom)
+  // 2. Initialize Dual Maps (Synced Pan & Zoom with Place Labels)
   useEffect(() => {
     if (mapLayout !== 'dual') return;
     if (!leftMapContainerRef.current || !rightMapContainerRef.current) return;
@@ -140,17 +197,23 @@ export const MapView: React.FC<MapViewProps> = ({
       return;
     }
 
-    // Left Map (Before 2021)
+    // Left Map (Before Baseline)
     const mapLeft = L.map(leftMapContainerRef.current, {
       center: center,
       zoom: 14,
       zoomControl: true
     });
 
-    L.tileLayer(TILE_LAYERS[baseMapType].url, {
+    setupCustomPanes(mapLeft);
+
+    const leftBase = L.tileLayer(TILE_LAYERS[baseMapType].url, {
       attribution: TILE_LAYERS[baseMapType].attribution,
       maxZoom: 19
     }).addTo(mapLeft);
+    leftBaseTileRef.current = leftBase;
+
+    // Overlay Google-Maps-style place and street labels on Left Map
+    leftLabelsRef.current = createLabelsLayers(mapLeft, baseMapType === 'esri');
 
     const leftGroup = L.layerGroup().addTo(mapLeft);
     leftDrawGroupRef.current = leftGroup;
@@ -163,10 +226,16 @@ export const MapView: React.FC<MapViewProps> = ({
       zoomControl: false // keep left zoom control only for sleekness
     });
 
-    L.tileLayer(TILE_LAYERS[baseMapType].url, {
+    setupCustomPanes(mapRight);
+
+    const rightBase = L.tileLayer(TILE_LAYERS[baseMapType].url, {
       attribution: TILE_LAYERS[baseMapType].attribution,
       maxZoom: 19
     }).addTo(mapRight);
+    rightBaseTileRef.current = rightBase;
+
+    // Overlay Google-Maps-style place and street labels identically on Right Map
+    rightLabelsRef.current = createLabelsLayers(mapRight, baseMapType === 'esri');
 
     const rightGroup = L.layerGroup().addTo(mapRight);
     rightDrawGroupRef.current = rightGroup;
@@ -188,15 +257,36 @@ export const MapView: React.FC<MapViewProps> = ({
       mapRight.remove();
       leftMapRef.current = null;
       rightMapRef.current = null;
+      leftBaseTileRef.current = null;
+      rightBaseTileRef.current = null;
+      leftLabelsRef.current = [];
+      rightLabelsRef.current = [];
     };
   }, [mapLayout]);
 
-  // 3. Update Base Layer Tile across active maps
+  // 3. Update Base Layer Tile and Labels across active maps
   useEffect(() => {
     const tileConfig = TILE_LAYERS[baseMapType];
     if (singleBaseTileRef.current) {
       singleBaseTileRef.current.setUrl(tileConfig.url);
     }
+    if (leftBaseTileRef.current) {
+      leftBaseTileRef.current.setUrl(tileConfig.url);
+    }
+    if (rightBaseTileRef.current) {
+      rightBaseTileRef.current.setUrl(tileConfig.url);
+    }
+
+    const isEsri = baseMapType === 'esri';
+    singleLabelsRef.current.forEach((layer, idx) => {
+      layer.setOpacity(isEsri ? (idx === 1 ? 0.9 : 1.0) : 0);
+    });
+    leftLabelsRef.current.forEach((layer, idx) => {
+      layer.setOpacity(isEsri ? (idx === 1 ? 0.9 : 1.0) : 0);
+    });
+    rightLabelsRef.current.forEach((layer, idx) => {
+      layer.setOpacity(isEsri ? (idx === 1 ? 0.9 : 1.0) : 0);
+    });
   }, [baseMapType]);
 
   // 4. Update Bounds & Raster Image Overlays (Single Map)
@@ -308,6 +398,7 @@ export const MapView: React.FC<MapViewProps> = ({
       if (geojson && geojson.features.length > 0) {
         console.log(`[RENDER] Step 4: Drawing change overlay on map -> features_count=${geojson.features.length}`);
         const layer = L.geoJSON(geojson as any, {
+          pane: 'geojsonPane',
           style: (feature) => {
             const color = feature?.properties?.color || '#00e5ff';
             return {
@@ -363,6 +454,7 @@ export const MapView: React.FC<MapViewProps> = ({
         const [minLat, minLon, maxLat, maxLon] = customSelectedBbox;
         const bounds = L.latLngBounds([minLat, minLon], [maxLat, maxLon]);
         L.rectangle(bounds, {
+          pane: 'geojsonPane',
           color: '#00e5ff',
           weight: 2.5,
           dashArray: '6, 6',
@@ -596,13 +688,11 @@ export const MapView: React.FC<MapViewProps> = ({
             </div>
           )
         ) : (
-          locationName ? (
-            <div className="gis-header-location-pill" title={`Selected Location: ${locationName}`}>
-              <MapPin size={13} color="#00e5ff" />
-              <span className="location-pill-prefix">Location:</span>
-              <span className="location-pill-name">{locationName}</span>
-            </div>
-          ) : null
+          <div className="gis-header-location-pill" title={`Selected Location: ${displayLocation}`}>
+            <MapPin size={13} color="#00e5ff" />
+            <span className="location-pill-prefix">Location:</span>
+            <span className="location-pill-name">{displayLocation}</span>
+          </div>
         )}
 
         {/* Right: Drawing Tools */}
@@ -672,9 +762,7 @@ export const MapView: React.FC<MapViewProps> = ({
           <div className="dual-map-half left">
             <div className="dual-map-label before">
               <span className="label-title">🛰️ Before: 2021 Baseline</span>
-              {locationName && (
-                <span className="label-subloc" title={locationName}>📍 {locationName}</span>
-              )}
+              <span className="label-subloc" title={displayLocation}>📍 {displayLocation}</span>
             </div>
             <div ref={leftMapContainerRef} className="map-viewport-half" />
           </div>
@@ -683,9 +771,7 @@ export const MapView: React.FC<MapViewProps> = ({
           <div className="dual-map-half right">
             <div className="dual-map-label after">
               <span className="label-title">🛰️ After: Current + Change Polygons</span>
-              {locationName && (
-                <span className="label-subloc" title={locationName}>📍 {locationName}</span>
-              )}
+              <span className="label-subloc" title={displayLocation}>📍 {displayLocation}</span>
             </div>
             <div ref={rightMapContainerRef} className="map-viewport-half" />
           </div>
