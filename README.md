@@ -1,6 +1,10 @@
 # ORBITERRA — Semantic Retrieval & Multi-Temporal Change Analysis of Satellite Imagery
 ### Smart India Hackathon (SIH) — Full-Stack Working Prototype
 
+| 🌐 Live Production Web App | 📦 GitHub Repository | 💻 Local Development |
+| :--- | :--- | :--- |
+| **[orbiterra.vercel.app](https://orbiterra.vercel.app/)** | **[github.com/yashmp3087-cmd/ORBITERRA](https://github.com/yashmp3087-cmd/ORBITERRA)** | `http://localhost:5173/` |
+
 > **Project Title:** Semantic Retrieval and Multi-Temporal Change Analysis of Satellite Imagery  
 > **Domain:** Space Technology / Disaster Management / Urban Planning / Environmental Monitoring  
 > **Status:** Fully functional, verified end-to-end prototype with Python AI Core, FastAPI backend, and React + TypeScript GIS dashboard.

@@ -568,6 +568,15 @@ export const App: React.FC = () => {
           <strong>ORBITERRA</strong> &bull; Semantic Retrieval & Multi-Temporal Change Analysis of Satellite Imagery
         </div>
         <div className="footer-tags">
+          <a 
+            href="https://orbiterra.vercel.app/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="footer-pill"
+            style={{ color: '#00e5ff', borderColor: 'rgba(0, 229, 255, 0.4)', textDecoration: 'none', fontWeight: 600 }}
+          >
+            🌐 orbiterra.vercel.app
+          </a>
           <span className="footer-pill">PyTorch / OpenCV / Rasterio</span>
           <span className="footer-pill">PostgreSQL + PostGIS</span>
           <span className="footer-pill">FastAPI</span>
