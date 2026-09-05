@@ -598,12 +598,111 @@ body {
   gap: 0.6rem;
 }
 
+.breakdown-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.2rem;
+}
+
 .breakdown-title {
   font-size: 0.78rem;
   text-transform: uppercase;
   color: var(--text-muted);
   font-weight: 600;
   letter-spacing: 0.05em;
+}
+
+.breakdown-detected-tag {
+  font-size: 0.7rem;
+  color: var(--accent-cyan);
+  background: rgba(0, 229, 255, 0.1);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-full);
+  font-weight: 500;
+}
+
+.category-groups-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.category-group-card {
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(51, 65, 85, 0.6);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+
+.category-group-card:hover {
+  border-color: rgba(100, 116, 139, 0.8);
+}
+
+.category-group-header-btn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.55rem 0.75rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-align: left;
+  transition: background 0.15s ease;
+}
+
+.category-group-header-btn:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.category-group-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.category-group-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.category-group-badge {
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius-sm);
+}
+
+.group-chevron {
+  color: var(--text-muted);
+  transition: transform 0.2s ease;
+}
+
+.category-subitems-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.5rem 0.75rem 0.75rem;
+  border-top: 1px solid rgba(51, 65, 85, 0.4);
+  background: rgba(10, 15, 30, 0.4);
+}
+
+.breakdown-subitem-name {
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 500;
 }
 
 .breakdown-item {

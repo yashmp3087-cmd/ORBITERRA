@@ -14,12 +14,126 @@ from PIL import Image
 from .preprocessor import preprocess_image, align_image_pair, compute_spectral_indices
 from .utils_geo import contours_to_geojson
 
+CHANGE_TAXONOMY = {
+    "🏠 Buildings & Construction": [
+        {
+            "name": "New buildings/houses",
+            "hex": "#FF5722",
+            "rgba": (255, 87, 34, 180),
+            "shifts": (0.02, 0.24, -0.06)
+        },
+        {
+            "name": "New industrial/commercial areas",
+            "hex": "#FF7043",
+            "rgba": (255, 112, 67, 180),
+            "shifts": (0.01, 0.28, -0.08)
+        }
+    ],
+    "🛣️ Roads & Transportation": [
+        {
+            "name": "New roads",
+            "hex": "#FBBF24",
+            "rgba": (251, 191, 36, 180),
+            "shifts": (-0.06, 0.16, -0.03)
+        },
+        {
+            "name": "Bridges/flyovers",
+            "hex": "#F59E0B",
+            "rgba": (245, 158, 11, 180),
+            "shifts": (-0.04, 0.19, 0.05)
+        },
+        {
+            "name": "New railway lines",
+            "hex": "#D97706",
+            "rgba": (217, 119, 6, 180),
+            "shifts": (-0.08, 0.14, -0.02)
+        }
+    ],
+    "🌳 Vegetation & Land Use": [
+        {
+            "name": "Reduction/increase in forest/green areas",
+            "hex": "#10B981",
+            "rgba": (16, 185, 129, 180),
+            "shifts": (-0.32, 0.08, -0.05)
+        },
+        {
+            "name": "Agricultural land converted to buildings",
+            "hex": "#84CC16",
+            "rgba": (132, 204, 22, 180),
+            "shifts": (-0.22, 0.26, -0.07)
+        }
+    ],
+    "💧 Water Bodies": [
+        {
+            "name": "Changes in rivers, lakes, reservoirs",
+            "hex": "#0284C7",
+            "rgba": (2, 132, 199, 180),
+            "shifts": (-0.05, -0.08, -0.26)
+        },
+        {
+            "name": "New water infrastructure",
+            "hex": "#06B6D4",
+            "rgba": (6, 182, 212, 180),
+            "shifts": (-0.03, 0.10, -0.18)
+        },
+        {
+            "name": "Changes in water spread",
+            "hex": "#38BDF8",
+            "rgba": (56, 189, 248, 180),
+            "shifts": (-0.04, -0.04, -0.21)
+        }
+    ],
+    "🏭 Industrial Development": [
+        {
+            "name": "New factories",
+            "hex": "#A855F7",
+            "rgba": (168, 85, 247, 180),
+            "shifts": (0.01, 0.25, -0.05)
+        },
+        {
+            "name": "Industrial zones",
+            "hex": "#8B5CF6",
+            "rgba": (139, 92, 246, 180),
+            "shifts": (0.00, 0.29, -0.06)
+        }
+    ],
+    "⚡ Infrastructure": [
+        {
+            "name": "Power plants/substations",
+            "hex": "#EC4899",
+            "rgba": (236, 72, 153, 180),
+            "shifts": (0.03, 0.22, -0.04)
+        },
+        {
+            "name": "Large infrastructure projects",
+            "hex": "#F43F5E",
+            "rgba": (244, 63, 94, 180),
+            "shifts": (-0.12, 0.28, -0.08)
+        }
+    ]
+}
+
+ALL_SUBTYPES = []
+SUBTYPE_HEX = {}
+SUBTYPE_PALETTE = {}
+SUBTYPE_TO_GROUP = {}
+
+for grp, items in CHANGE_TAXONOMY.items():
+    for it in items:
+        nm = it["name"]
+        ALL_SUBTYPES.append(it)
+        SUBTYPE_HEX[nm] = it["hex"]
+        SUBTYPE_PALETTE[nm] = it["rgba"]
+        SUBTYPE_TO_GROUP[nm] = grp
+
+# Comprehensive palette including legacy categories and new sub-types
 CHANGE_PALETTE = {
-    "New Construction": (255, 87, 34, 180),       # Vibrant Deep Orange/Red
-    "Vegetation Loss": (233, 30, 99, 180),        # High-visibility Magenta/Rose
-    "Water Body Shrinkage": (3, 169, 244, 180),   # Vivid Azure/Cyan
-    "Road Development": (255, 193, 7, 180),       # High-visibility Amber/Yellow
-    "General Land Alteration": (156, 39, 176, 180)# Violet
+    "New Construction": (255, 87, 34, 180),
+    "Vegetation Loss": (233, 30, 99, 180),
+    "Water Body Shrinkage": (3, 169, 244, 180),
+    "Road Development": (255, 193, 7, 180),
+    "General Land Alteration": (156, 39, 176, 180),
+    **SUBTYPE_PALETTE
 }
 
 CHANGE_HEX = {
@@ -27,7 +141,8 @@ CHANGE_HEX = {
     "Vegetation Loss": "#E91E63",
     "Water Body Shrinkage": "#03A9F4",
     "Road Development": "#FFC107",
-    "General Land Alteration": "#9C27B0"
+    "General Land Alteration": "#9C27B0",
+    **SUBTYPE_HEX
 }
 
 class ChangeDetectionEngine:
@@ -116,13 +231,7 @@ class ChangeDetectionEngine:
         mask_rgba = np.zeros((h, w, 4), dtype=np.uint8)
 
         total_area_px = 0
-        type_counters = {
-            "New Construction": 0.0,
-            "Vegetation Loss": 0.0,
-            "Water Body Shrinkage": 0.0,
-            "Road Development": 0.0,
-            "General Land Alteration": 0.0
-        }
+        type_counters = {sub["name"]: 0.0 for sub in ALL_SUBTYPES}
 
         for cnt in contours:
             area_px = cv2.contourArea(cnt)
@@ -148,23 +257,47 @@ class ChangeDetectionEngine:
             rw, rh = rect[1]
             aspect_ratio = max(rw, rh) / (min(rw, rh) + 1e-4)
 
-            # Classification rules
-            if mean_d_ndvi < -0.12 and mean_d_ndbi < 0.25:
-                change_type = "Vegetation Loss"
-            elif mean_d_ndwi < -0.10:
-                change_type = "Water Body Shrinkage"
-            elif aspect_ratio > 3.2 and area_px > 300:
-                change_type = "Road Development"
-            elif mean_d_ndbi > 0.08 or (mean_d_lum > 0.10 and mean_d_ndvi < 0.05):
-                change_type = "New Construction"
-            else:
-                # Fallback to strongest spectral shift
-                if mean_d_ndvi < -0.05:
-                    change_type = "Vegetation Loss"
-                elif mean_d_ndbi > 0.05:
-                    change_type = "New Construction"
+            # Hierarchical multi-class classification
+            if mean_d_ndwi < -0.10:
+                if area_px > 2500:
+                    change_type = "Changes in rivers, lakes, reservoirs"
+                elif aspect_ratio > 2.0:
+                    change_type = "Changes in water spread"
                 else:
-                    change_type = "General Land Alteration"
+                    change_type = "New water infrastructure"
+            elif mean_d_ndvi < -0.12 and mean_d_ndbi > 0.12:
+                change_type = "Agricultural land converted to buildings"
+            elif mean_d_ndvi < -0.12:
+                change_type = "Reduction/increase in forest/green areas"
+            elif aspect_ratio > 3.0 and area_px > 300:
+                if area_px > 2000:
+                    change_type = "New railway lines"
+                elif mean_d_lum > 0.12:
+                    change_type = "Bridges/flyovers"
+                else:
+                    change_type = "New roads"
+            elif mean_d_ndbi > 0.18:
+                if area_px > 3500:
+                    change_type = "Industrial zones"
+                elif area_px > 1800:
+                    change_type = "New factories"
+                else:
+                    change_type = "New industrial/commercial areas"
+            elif mean_d_ndbi > 0.08 or (mean_d_lum > 0.10 and mean_d_ndvi < 0.05):
+                if area_px > 2500:
+                    change_type = "Large infrastructure projects"
+                else:
+                    change_type = "New buildings/houses"
+            else:
+                # Strongest spectral shift fallback
+                if mean_d_ndvi < -0.05:
+                    change_type = "Reduction/increase in forest/green areas"
+                elif mean_d_ndbi > 0.05:
+                    change_type = "New buildings/houses"
+                elif mean_d_ndwi < -0.05:
+                    change_type = "Changes in water spread"
+                else:
+                    change_type = "Large infrastructure projects"
 
             type_counters[change_type] += area_px
 
@@ -271,19 +404,14 @@ def generate_custom_area_detection(
     seed_val = int((abs(min_lat * 317.0) + abs(min_lon * 997.0) + abs(max_lat * 113.0) + abs(max_lon * 521.0)) * 1000) % (2**31 - 1)
     rng = np.random.RandomState(seed_val)
     
-    # Geographic & spectral context mapping
-    possible_types = [
-        ("New Construction", "#FF5722", (0.02, 0.22, -0.08)),
-        ("Vegetation Loss", "#E91E63", (-0.28, 0.12, -0.05)),
-        ("Road Development", "#FFC107", (-0.05, 0.18, -0.02)),
-        ("Water Body Shrinkage", "#03A9F4", (-0.04, -0.06, -0.22)),
-        ("General Land Alteration", "#9C27B0", (-0.11, 0.14, -0.04))
-    ]
+    # Geographic & spectral context mapping to full 6-category taxonomy
+    grp_keys = list(CHANGE_TAXONOMY.keys())
+    primary_grp_idx = int(abs(c_lat * 7.1 + c_lon * 13.3)) % len(grp_keys)
+    primary_group = grp_keys[primary_grp_idx]
+    group_items = CHANGE_TAXONOMY[primary_group]
+    primary_item = group_items[int(abs(c_lat * 3.7 + c_lon * 5.9)) % len(group_items)]
     
-    # Weight types based on coordinate hash
-    type_idx = int(abs(c_lat * 7.1 + c_lon * 13.3)) % len(possible_types)
-    primary_type_tuple = possible_types[type_idx]
-    primary_change_type = primary_type_tuple[0]
+    primary_change_type = primary_item["name"]
     
     # Number of distinct detected change clusters (2 to 5 depending on area)
     if total_bbox_ha < 0.2:
@@ -302,8 +430,18 @@ def generate_custom_area_detection(
     
     # Generate sub-polygons strictly inside the bounding box
     for i in range(num_features):
-        feat_type_tuple = primary_type_tuple if i < (num_features // 2 + 1) else possible_types[(type_idx + i) % len(possible_types)]
-        feat_type, feat_color, shifts = feat_type_tuple
+        if i == 0:
+            feat_item = primary_item
+        elif i < len(group_items):
+            feat_item = group_items[i % len(group_items)]
+        else:
+            secondary_grp = grp_keys[(primary_grp_idx + i) % len(grp_keys)]
+            secondary_items = CHANGE_TAXONOMY[secondary_grp]
+            feat_item = secondary_items[i % len(secondary_items)]
+
+        feat_type = feat_item["name"]
+        feat_color = feat_item["hex"]
+        shifts = feat_item["shifts"]
         
         # Sub-cluster center within interior 18%-82% of bounding box
         fc_lon = min_lon + span_lon * rng.uniform(0.18, 0.82)
@@ -359,6 +497,9 @@ def generate_custom_area_detection(
     total_change_ha = round(total_change_sq_m / 10000.0, 2)
     avg_conf = round(float(sum(f["properties"]["confidence_score"] for f in features) / max(len(features), 1)), 3)
     
+    if type_area_counters:
+        primary_change_type = max(type_area_counters, key=type_area_counters.get)
+
     breakdown = {}
     if total_change_sq_m > 0:
         for k, v in type_area_counters.items():

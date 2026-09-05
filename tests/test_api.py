@@ -37,7 +37,12 @@ def test_compare_pipeline():
     res = client.post("/api/compare", json={"scenario_id": "SCN_URBAN"})
     assert res.status_code == 200
     data = res.json()
-    assert data["primary_change_type"] == "New Construction"
+    assert data["primary_change_type"] in [
+        "New Construction", 
+        "Agricultural land converted to buildings", 
+        "New buildings/houses", 
+        "New industrial/commercial areas"
+    ]
     assert "mask_url" in data
     assert len(data["geojson"]["features"]) > 0
     print("POST /api/compare passed. Detected:", data["primary_change_type"], "Confidence:", data["confidence_percentage"])
@@ -228,6 +233,25 @@ def test_reverse_geocoding():
     assert len(comp_data["location_name"]) > 0
     print(f"GET /api/geocode/reverse & custom bbox test passed: {comp_data['location_name']}")
 
+def test_taxonomy_breakdown_categories():
+    """Verify that breakdown contains specific sub-types from the 6-category taxonomy."""
+    res = client.post("/api/compare", json={"custom_bbox": [17.38, 78.48, 17.39, 78.49]})
+    assert res.status_code == 200
+    data = res.json()
+    breakdown = data["breakdown"]
+    assert len(breakdown) > 0
+    all_subtypes = [
+        "New buildings/houses", "New industrial/commercial areas",
+        "New roads", "Bridges/flyovers", "New railway lines",
+        "Reduction/increase in forest/green areas", "Agricultural land converted to buildings",
+        "Changes in rivers, lakes, reservoirs", "New water infrastructure", "Changes in water spread",
+        "New factories", "Industrial zones",
+        "Power plants/substations", "Large infrastructure projects"
+    ]
+    for k in breakdown.keys():
+        assert k in all_subtypes, f"Unknown taxonomy key: {k}"
+    print(f"POST /api/compare 6-category taxonomy breakdown test passed: {breakdown}")
+
 if __name__ == "__main__":
     test_health()
     test_list_images()
@@ -245,5 +269,6 @@ if __name__ == "__main__":
     test_compare_invalid_raises_error()
     test_timeline_query()
     test_reverse_geocoding()
+    test_taxonomy_breakdown_categories()
     print("ALL API TESTS PASSED SUCCESSFULLY!")
 
