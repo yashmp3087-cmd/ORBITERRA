@@ -30,7 +30,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           <input
             type="text"
             className="search-input"
-            placeholder="Enter natural language query (e.g. 'find new buildings near the river', 'deforestation in hills')..."
+            placeholder="Enter natural language query (e.g. 'find new buildings in Pune', 'deforestation in hills')..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />

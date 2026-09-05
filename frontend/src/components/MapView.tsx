@@ -79,7 +79,7 @@ export const MapView: React.FC<MapViewProps> = ({
   const displayLocation = locationName?.trim() ? locationName : 'Pune, Maharashtra';
 
   // Mode: single map or synced dual-map comparison
-  const [mapLayout, setMapLayout] = useState<'single' | 'dual'>('single');
+  const [mapLayout, setMapLayout] = useState<'single' | 'dual'>('dual');
   const [baseMapType, setBaseMapType] = useState<'esri' | 'dark'>('esri');
   const [layerOpacity, setLayerOpacity] = useState<number>(1.0); // 0 = 100% before, 1 = 100% after
   const [drawMode, setDrawMode] = useState<'idle' | 'box' | 'polygon'>('idle');

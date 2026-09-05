@@ -253,7 +253,7 @@ def compare_scenes(request: CompareRequest, db: Session = Depends(get_db)):
     if not os.path.exists(path_before) or not os.path.exists(path_after):
         raise HTTPException(status_code=404, detail="One or more image files missing on disk.")
 
-    bbox = scene_after.get("bbox", [12.9600, 77.7150, 12.9830, 77.7420])
+    bbox = scene_after.get("bbox", [18.5050, 73.8400, 18.5358, 73.8734])
     resolution = scene_after.get("resolution_m", 10.0)
 
     # Execute AI Core change detection with optional sub_bbox ROI

@@ -155,9 +155,9 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
   const styleConfig = TYPE_COLORS[primaryType] || TYPE_COLORS["General Land Alteration"];
   const confidencePct = result.overall_confidence * 100;
 
-  // GPS Coordinates & Links
-  const lat = result.centroid_lat !== undefined ? result.centroid_lat : 12.9716;
-  const lng = result.centroid_lng !== undefined ? result.centroid_lng : 77.7289;
+  // GPS Coordinates & Links (Default to Pune if not provided)
+  const lat = result.centroid_lat !== undefined ? result.centroid_lat : 18.5204;
+  const lng = result.centroid_lng !== undefined ? result.centroid_lng : 73.8567;
   const gmapsUrl = result.google_maps_url || `https://www.google.com/maps?q=${lat},${lng}&z=16`;
   const gearthUrl = result.google_earth_url || `https://earth.google.com/web/search/${lat},${lng}`;
 

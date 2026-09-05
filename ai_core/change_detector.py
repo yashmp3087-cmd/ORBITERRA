@@ -165,7 +165,7 @@ class ChangeDetectionEngine:
         Main change detection pipeline.
         Supports sub_bbox to focus analysis on a custom selected area within the scene.
         """
-        bbox = bbox or [12.9600, 77.7150, 12.9830, 77.7420] # Default fallback bounding box
+        bbox = bbox or [18.5050, 73.8400, 18.5358, 73.8734] # Default fallback bounding box (Pune)
         
         # 1. Load and align imagery
         img1 = preprocess_image(image_before_input)

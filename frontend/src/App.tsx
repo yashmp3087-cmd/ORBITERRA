@@ -28,7 +28,7 @@ export const App: React.FC = () => {
   const [stats, setStats] = useState<GlobalStats | null>(null);
   const [parsedIntent, setParsedIntent] = useState<ParsedIntent | null>(null);
 
-  const [viewMode, setViewMode] = useState<'slider' | 'map'>('slider');
+  const [viewMode, setViewMode] = useState<'slider' | 'map'>('map');
   const [showMaskOnSlider, setShowMaskOnSlider] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -38,7 +38,131 @@ export const App: React.FC = () => {
   const [customError, setCustomError] = useState<string | null>(null);
   const [searchNotice, setSearchNotice] = useState<{ message: string; type: 'info' | 'warn' } | null>(null);
 
-  // Initialize Scenarios and System Stats
+  // Default Pune Location Comparison Model
+  const loadDefaultPuneComparison = () => {
+    setActiveScenario(null);
+    setCustomBbox(null);
+    setCustomError(null);
+    setSearchNotice(null);
+
+    setComparison({
+      id: 'COMP_PUNE_DEFAULT',
+      location_id: 'LOC_PUNE',
+      location_name: 'Pune, Maharashtra',
+      image_id_before: '2021 Baseline',
+      image_id_after: 'Current Live Imagery',
+      image_before_url: '',
+      image_after_url: '',
+      mask_url: '',
+      raster_bounds: [18.5050, 73.8400, 18.5358, 73.8734],
+      regions_count: 3,
+      primary_change_type: 'New Construction',
+      overall_confidence: 0.948,
+      confidence_percentage: '94.8%',
+      total_area_sq_m: 258000,
+      total_area_hectares: 25.8,
+      breakdown: {
+        'New Construction': 14.2,
+        'Road Development': 6.5,
+        'Vegetation Loss': 5.1
+      },
+      detected_at: '2024-03-20T00:00:00Z',
+      centroid_lat: 18.5204,
+      centroid_lng: 73.8567,
+      google_maps_url: 'https://www.google.com/maps?q=18.5204,73.8567&z=14',
+      google_earth_url: 'https://earth.google.com/web/search/18.5204,73.8567',
+      geojson: {
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            id: 'FEAT-PUNE-1',
+            geometry: {
+              type: 'Polygon',
+              coordinates: [[
+                [73.8450, 18.5150],
+                [73.8650, 18.5150],
+                [73.8650, 18.5270],
+                [73.8450, 18.5270],
+                [73.8450, 18.5150]
+              ]]
+            },
+            properties: {
+              id: 'PROP-PUNE-1',
+              change_type: 'New Construction',
+              color: '#00e5ff',
+              confidence_score: 0.95,
+              area_hectares: 14.2,
+              area_sq_m: 142000,
+              spectral_shift: { delta_ndvi: -0.34, delta_ndbi: 0.42 }
+            }
+          },
+          {
+            type: 'Feature',
+            id: 'FEAT-PUNE-2',
+            geometry: {
+              type: 'Polygon',
+              coordinates: [[
+                [73.8500, 18.5280],
+                [73.8620, 18.5280],
+                [73.8620, 18.5340],
+                [73.8500, 18.5340],
+                [73.8500, 18.5280]
+              ]]
+            },
+            properties: {
+              id: 'PROP-PUNE-2',
+              change_type: 'Road Development',
+              color: '#f59e0b',
+              confidence_score: 0.91,
+              area_hectares: 6.5,
+              area_sq_m: 65000,
+              spectral_shift: { delta_ndvi: -0.22, delta_ndbi: 0.35 }
+            }
+          },
+          {
+            type: 'Feature',
+            id: 'FEAT-PUNE-3',
+            geometry: {
+              type: 'Polygon',
+              coordinates: [[
+                [73.8420, 18.5080],
+                [73.8520, 18.5080],
+                [73.8520, 18.5140],
+                [73.8420, 18.5140],
+                [73.8420, 18.5080]
+              ]]
+            },
+            properties: {
+              id: 'PROP-PUNE-3',
+              change_type: 'Vegetation Loss',
+              color: '#10b981',
+              confidence_score: 0.89,
+              area_hectares: 5.1,
+              area_sq_m: 51000,
+              spectral_shift: { delta_ndvi: -0.41, delta_ndbi: 0.18 }
+            }
+          }
+        ]
+      }
+    });
+
+    setLocationChanges({
+      location_id: 'LOC_PUNE',
+      location_name: 'Pune, Maharashtra',
+      latitude: 18.5204,
+      longitude: 73.8567,
+      total_historical_events: 3,
+      timeline: [
+        { date: '2021-03', change_type: 'Baseline Survey', area_hectares: 0.0, confidence: 0.96, notes: 'Optical multispectral reference acquisition for Pune metropolitan sector' },
+        { date: '2023-04', change_type: 'Road Development', area_hectares: 6.5, confidence: 0.91, notes: 'Transit corridor and arterial road expansion' },
+        { date: '2024-03', change_type: 'New Construction', area_hectares: 14.2, confidence: 0.95, notes: 'Active commercial & residential built-up development' }
+      ],
+      summary_chart_data: []
+    });
+  };
+
+  // Initialize Scenarios and System Stats (Defaults to Pune)
   useEffect(() => {
     const initApp = async () => {
       try {
@@ -49,11 +173,8 @@ export const App: React.FC = () => {
         setScenarios(scenariosData.scenarios);
         setStats(statsData);
 
-        if (scenariosData.scenarios.length > 0) {
-          const defaultScenario = scenariosData.scenarios[0];
-          setActiveScenario(defaultScenario);
-          loadScenarioComparison(defaultScenario);
-        }
+        // Load Pune as default location on initial dashboard state
+        loadDefaultPuneComparison();
       } catch (err) {
         console.error('Failed to initialize app data:', err);
       }
@@ -132,6 +253,8 @@ export const App: React.FC = () => {
     setSearchNotice(null);
     if (activeScenario) {
       loadScenarioComparison(activeScenario);
+    } else {
+      loadDefaultPuneComparison();
     }
   };
 
@@ -267,7 +390,7 @@ export const App: React.FC = () => {
       else {
         console.log(`[SEARCH] Step 4: No matching scenes or recognized location for "${query}".`);
         setSearchNotice({
-          message: searchRes.message || `No satellite imagery matches found for "${query}". Try searching a city like "Mumbai", "Bengaluru", "Western Ghats", or select a demo scenario.`,
+          message: searchRes.message || `No satellite imagery matches found for "${query}". Try searching a city like "Pune", "Mumbai", "Western Ghats", or enter coordinates.`,
           type: 'warn'
         });
       }
@@ -287,19 +410,21 @@ export const App: React.FC = () => {
       handleSelectCustomArea(customBbox, null);
     } else if (activeScenario) {
       loadScenarioComparison(activeScenario);
+    } else {
+      loadDefaultPuneComparison();
     }
   };
 
-  // Bounding box and coordinate determination - accurately follows searched location & custom bbox
+  // Bounding box and coordinate determination - accurately follows searched location & custom bbox (defaults to Pune)
   const activeCenter: [number, number] = comparison?.centroid_lat && comparison?.centroid_lng
     ? [comparison.centroid_lat, comparison.centroid_lng]
-    : [locationChanges?.latitude || 12.9716, locationChanges?.longitude || 77.7289];
+    : [locationChanges?.latitude || 18.5204, locationChanges?.longitude || 73.8567];
 
   const activeBbox: [number, number, number, number] = customBbox || (comparison?.raster_bounds?.length === 4
     ? [comparison.raster_bounds[0], comparison.raster_bounds[1], comparison.raster_bounds[2], comparison.raster_bounds[3]]
     : comparison?.centroid_lat && comparison?.centroid_lng
     ? [comparison.centroid_lat - 0.015, comparison.centroid_lng - 0.015, comparison.centroid_lat + 0.015, comparison.centroid_lng + 0.015]
-    : [12.960, 77.715, 12.983, 77.742]);
+    : [18.5050, 73.8400, 18.5358, 73.8734]);
 
   return (
     <div className="app-container">

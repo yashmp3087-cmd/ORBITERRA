@@ -10,6 +10,24 @@ router = APIRouter(tags=["Historical Changes & Analytics"])
 
 # Realistic multi-temporal historical tracking datasets for charting trends over time
 LOCATION_HISTORIES = {
+    "LOC_PUNE": {
+        "location_id": "LOC_PUNE",
+        "location_name": "Pune, Maharashtra",
+        "latitude": 18.5204,
+        "longitude": 73.8567,
+        "timeline": [
+            {"date": "2021-03", "change_type": "Baseline Survey", "area_hectares": 0.0, "confidence": 0.96, "notes": "Optical baseline reference acquisition for Pune metropolitan sector"},
+            {"date": "2022-05", "change_type": "Infrastructure Expansion", "area_hectares": 5.2, "confidence": 0.92, "notes": "Transit link and arterial corridor grading"},
+            {"date": "2023-09", "change_type": "New Construction", "area_hectares": 11.4, "confidence": 0.94, "notes": "Commercial tech development and built-up structures"},
+            {"date": "2024-03", "change_type": "New Construction", "area_hectares": 14.2, "confidence": 0.95, "notes": "Active urban built-up expansion"}
+        ],
+        "summary_chart_data": [
+            {"period": "2021-Q1", "built_up_area_ha": 8.5, "vegetation_cover_ha": 28.0, "bare_soil_ha": 12.0},
+            {"period": "2022-Q2", "built_up_area_ha": 12.1, "vegetation_cover_ha": 24.3, "bare_soil_ha": 13.5},
+            {"period": "2023-Q3", "built_up_area_ha": 18.2, "vegetation_cover_ha": 19.5, "bare_soil_ha": 11.8},
+            {"period": "2024-Q1", "built_up_area_ha": 23.6, "vegetation_cover_ha": 16.2, "bare_soil_ha": 10.1}
+        ]
+    },
     "LOC_BLR": {
         "location_id": "LOC_BLR",
         "location_name": "Bengaluru East Tech Corridor, Karnataka",
