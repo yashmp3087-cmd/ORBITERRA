@@ -171,6 +171,16 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
         isCustomArea={result.is_custom_selection}
       />
 
+      {/* Location Label */}
+      {result.location_name && (
+        <div className="results-location-banner">
+          <MapPin size={13} color="#00e5ff" style={{ flexShrink: 0 }} />
+          <span className="results-location-text">
+            📍 Location: <strong>{result.location_name}</strong>
+          </span>
+        </div>
+      )}
+
       {/* Breakdown per change type */}
       {result.breakdown && Object.keys(result.breakdown).length > 0 && (
         <div className="breakdown-section">

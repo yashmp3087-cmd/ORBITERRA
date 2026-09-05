@@ -96,3 +96,11 @@ export async function fetchStats(): Promise<GlobalStats> {
   }
   return res.json();
 }
+
+export async function reverseGeocode(lat: number, lon: number): Promise<{ location_name: string; latitude: number; longitude: number }> {
+  const res = await fetch(`${API_BASE}/api/geocode/reverse?lat=${lat}&lon=${lon}`);
+  if (!res.ok) {
+    throw new Error(`Reverse geocode failed: ${res.statusText}`);
+  }
+  return res.json();
+}

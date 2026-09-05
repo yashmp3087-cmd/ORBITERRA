@@ -212,6 +212,22 @@ def test_custom_polygon_geometry_accepted():
     assert len(data["geojson"]["features"]) > 0
     print("POST /api/compare with custom_geometry verified successfully!")
 
+def test_reverse_geocoding():
+    """Verify reverse geocoding returns a readable place name."""
+    res = client.get("/api/geocode/reverse?lat=17.3850&lon=78.4867")
+    assert res.status_code == 200
+    data = res.json()
+    assert "location_name" in data
+    assert "Hyderabad" in data["location_name"] or "Telangana" in data["location_name"]
+
+    # Verify custom bbox in compare returns location_name
+    comp_res = client.post("/api/compare", json={"custom_bbox": [17.38, 78.48, 17.39, 78.49]})
+    assert comp_res.status_code == 200
+    comp_data = comp_res.json()
+    assert "location_name" in comp_data
+    assert len(comp_data["location_name"]) > 0
+    print(f"GET /api/geocode/reverse & custom bbox test passed: {comp_data['location_name']}")
+
 if __name__ == "__main__":
     test_health()
     test_list_images()
@@ -228,5 +244,6 @@ if __name__ == "__main__":
     test_custom_polygon_geometry_accepted()
     test_compare_invalid_raises_error()
     test_timeline_query()
+    test_reverse_geocoding()
     print("ALL API TESTS PASSED SUCCESSFULLY!")
 

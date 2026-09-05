@@ -354,6 +354,79 @@ def geocode_location_nominatim(query_text: str, timeout_sec: float = 1.5) -> Opt
     return None
 
 
+_REVERSE_GEOCODE_CACHE: Dict[Tuple[float, float], str] = {}
+
+
+def reverse_geocode_nominatim(lat: float, lon: float, timeout_sec: float = 2.0) -> str:
+    """
+    Resolves geographic coordinates (lat, lon) into a human-readable location name
+    using OpenStreetMap Nominatim with an in-memory cache and offline gazetteer fallback.
+    Examples: 'Hyderabad, Telangana', 'Bengaluru, Karnataka'.
+    """
+    cache_key = (round(lat, 3), round(lon, 3))
+    if cache_key in _REVERSE_GEOCODE_CACHE:
+        return _REVERSE_GEOCODE_CACHE[cache_key]
+
+    try:
+        url = f"https://nominatim.openstreetmap.org/reverse?lat={lat}&lon={lon}&format=jsonv2"
+        req = urllib.request.Request(
+            url,
+            headers={"User-Agent": "Cryptonex-Satellite-Search/1.0 (contact@cryptonex.io)"}
+        )
+        with urllib.request.urlopen(req, timeout=timeout_sec) as resp:
+            if resp.status == 200:
+                data = json.loads(resp.read().decode('utf-8'))
+                address = data.get("address", {})
+                
+                locality = (
+                    address.get("city") or 
+                    address.get("town") or 
+                    address.get("village") or 
+                    address.get("suburb") or 
+                    address.get("county") or
+                    address.get("state_district")
+                )
+                state = address.get("state")
+                country = address.get("country")
+                
+                if locality and state:
+                    resolved = f"{locality}, {state}"
+                elif locality and country:
+                    resolved = f"{locality}, {country}"
+                elif state and country:
+                    resolved = f"{state}, {country}"
+                elif data.get("display_name"):
+                    parts = [p.strip() for p in data["display_name"].split(",")]
+                    resolved = f"{parts[0]}, {parts[-1]}" if len(parts) > 1 else parts[0]
+                else:
+                    resolved = None
+
+                if resolved:
+                    _REVERSE_GEOCODE_CACHE[cache_key] = resolved
+                    return resolved
+    except Exception as e:
+        logger.debug(f"Reverse geocode lookup note for ({lat}, {lon}): {e}")
+
+    # Fallback to closest known gazetteer location if within ~45km
+    best_dist = 999.0
+    best_name = None
+    for loc_info in GEOGRAPHIC_GAZETTEER.values():
+        d_lat = abs(loc_info["latitude"] - lat)
+        d_lon = abs(loc_info["longitude"] - lon)
+        dist_approx = (d_lat ** 2 + d_lon ** 2) ** 0.5
+        if dist_approx < best_dist:
+            best_dist = dist_approx
+            best_name = loc_info["name"]
+
+    if best_dist < 0.40 and best_name:
+        fallback = best_name
+    else:
+        fallback = f"Coordinates ({lat:.4f}° N, {lon:.4f}° E)"
+
+    _REVERSE_GEOCODE_CACHE[cache_key] = fallback
+    return fallback
+
+
 class SemanticRetrievalEngine:
     def __init__(self, catalog_path: str = None):
         if catalog_path is None:

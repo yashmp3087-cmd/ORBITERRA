@@ -29,6 +29,7 @@ interface MapViewProps {
   onSelectArea?: (bbox: [number, number, number, number], geojson: any) => void;
   rasterBounds?: [number, number, number, number];
   onClearSelection?: () => void;
+  locationName?: string;
 }
 
 const TILE_LAYERS = {
@@ -56,7 +57,8 @@ export const MapView: React.FC<MapViewProps> = ({
   customSelectedBbox,
   isAnalyzingArea,
   onSelectArea,
-  onClearSelection
+  onClearSelection,
+  locationName
 }) => {
   const beforeUrl = satelliteImageUrlBefore || '';
   const afterUrl = satelliteImageUrlAfter || satelliteImageUrl || '';
@@ -571,8 +573,8 @@ export const MapView: React.FC<MapViewProps> = ({
           </button>
         </div>
 
-        {/* Center: Live 2021 vs Current Layer Slider (Single Map Mode) */}
-        {mapLayout === 'single' && (
+        {/* Center: Live 2021 vs Current Layer Slider (Single Map Mode) or Location Name (Dual Map Mode) */}
+        {mapLayout === 'single' ? (
           hasImageryOverlay ? (
             <div className="layer-crossfade-bar">
               <span className="fade-label before">2021 Baseline</span>
@@ -593,6 +595,14 @@ export const MapView: React.FC<MapViewProps> = ({
               <span>Live Basemap: {baseMapType === 'esri' ? 'ESRI World Imagery' : 'CartoDB Dark'}</span>
             </div>
           )
+        ) : (
+          locationName ? (
+            <div className="gis-header-location-pill" title={`Selected Location: ${locationName}`}>
+              <MapPin size={13} color="#00e5ff" />
+              <span className="location-pill-prefix">Location:</span>
+              <span className="location-pill-name">{locationName}</span>
+            </div>
+          ) : null
         )}
 
         {/* Right: Drawing Tools */}
@@ -661,7 +671,10 @@ export const MapView: React.FC<MapViewProps> = ({
           {/* Left: 2021 Baseline Map */}
           <div className="dual-map-half left">
             <div className="dual-map-label before">
-              <span>🛰️ Before: 2021 Baseline</span>
+              <span className="label-title">🛰️ Before: 2021 Baseline</span>
+              {locationName && (
+                <span className="label-subloc" title={locationName}>📍 {locationName}</span>
+              )}
             </div>
             <div ref={leftMapContainerRef} className="map-viewport-half" />
           </div>
@@ -669,7 +682,10 @@ export const MapView: React.FC<MapViewProps> = ({
           {/* Right: Current Map + Change Polygons */}
           <div className="dual-map-half right">
             <div className="dual-map-label after">
-              <span>🛰️ After: Current + Change Polygons</span>
+              <span className="label-title">🛰️ After: Current + Change Polygons</span>
+              {locationName && (
+                <span className="label-subloc" title={locationName}>📍 {locationName}</span>
+              )}
             </div>
             <div ref={rightMapContainerRef} className="map-viewport-half" />
           </div>

@@ -17,6 +17,7 @@ from ..database import get_db
 from ..models import ChangeDetectionRecord
 from ..schemas import CompareRequest, CompareResponse
 from ai_core.change_detector import ChangeDetectionEngine, generate_custom_area_detection
+from ai_core.semantic_search import reverse_geocode_nominatim
 from .changes import get_2021_to_current_timeline
 
 logger = logging.getLogger("backend.routers.compare")
@@ -125,10 +126,13 @@ def compare_scenes(request: CompareRequest, db: Session = Depends(get_db)):
                 f"primary_type={analysis['primary_change_type']}"
             )
 
+            resolved_name = reverse_geocode_nominatim(c_lat, c_lng)
+            loc_label = f"{scene_after['area_name']} ({resolved_name})" if resolved_name and resolved_name != scene_after['area_name'] else f"Custom ROI — {scene_after['area_name']}"
+
             return {
                 "id": f"DET_{uuid.uuid4().hex[:8].upper()}",
                 "location_id": loc_id,
-                "location_name": f"Custom ROI — {scene_after['area_name']}",
+                "location_name": loc_label,
                 "image_id_before": before_id,
                 "image_id_after": after_id,
                 "image_before_url": "", # Do not stretch demo PNG over custom ROI
@@ -161,13 +165,15 @@ def compare_scenes(request: CompareRequest, db: Session = Depends(get_db)):
                 resolution_m=10.0
             )
 
+            resolved_name = reverse_geocode_nominatim(c_lat, c_lng)
+
             custom_timeline = [
                 {
                     "date": "2021-03",
                     "change_type": "Baseline Survey",
                     "area_hectares": 0.0,
                     "confidence": 0.95,
-                    "notes": f"Historical satellite basemap coverage recorded for ({c_lat:.4f}°, {c_lng:.4f}°)",
+                    "notes": f"Historical satellite basemap coverage recorded for {resolved_name}",
                     "is_custom": True
                 },
                 {
@@ -175,20 +181,20 @@ def compare_scenes(request: CompareRequest, db: Session = Depends(get_db)):
                     "change_type": analysis["primary_change_type"],
                     "area_hectares": analysis["total_area_hectares"],
                     "confidence": analysis["overall_confidence"],
-                    "notes": f"Active user Region of Interest ({analysis['total_area_hectares']} ha) tracked via ESRI World Imagery",
+                    "notes": f"Active user Region of Interest in {resolved_name} ({analysis['total_area_hectares']} ha) tracked via ESRI World Imagery",
                     "is_custom": True
                 }
             ]
 
             logger.info(
-                f"[COMPARE] Step 3: Analysis result generated -> regions_count={analysis['regions_count']}, "
+                f"[COMPARE] Step 3: Analysis result generated -> location={resolved_name}, regions_count={analysis['regions_count']}, "
                 f"primary_type={analysis['primary_change_type']}"
             )
 
             return {
                 "id": f"DET_{uuid.uuid4().hex[:8].upper()}",
                 "location_id": f"CUSTOM_{abs(int(c_lat*100))}_{abs(int(c_lng*100))}",
-                "location_name": f"Custom Selection ({c_lat:.4f}° N, {c_lng:.4f}° E)",
+                "location_name": resolved_name,
                 "image_id_before": "BASEMAP_2021",
                 "image_id_after": "BASEMAP_CURRENT",
                 "image_before_url": "",
@@ -325,4 +331,17 @@ def compare_scenes(request: CompareRequest, db: Session = Depends(get_db)):
         "google_maps_url": google_maps_url,
         "google_earth_url": google_earth_url,
         "raster_bounds": bbox
+    }
+
+
+@router.get("/api/geocode/reverse")
+def api_reverse_geocode(lat: float, lon: float):
+    """
+    Reverse geocoding helper to resolve coordinates (lat, lon) into a place name.
+    """
+    name = reverse_geocode_nominatim(lat, lon)
+    return {
+        "location_name": name,
+        "latitude": lat,
+        "longitude": lon
     }

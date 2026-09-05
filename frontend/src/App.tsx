@@ -438,6 +438,7 @@ export const App: React.FC = () => {
                 isAnalyzingArea={isCustomLoading}
                 onSelectArea={handleSelectCustomArea}
                 onClearSelection={handleClearCustomSelection}
+                locationName={comparison?.location_name || activeScenario?.title || locationChanges?.location_name || ''}
               />
             )}
           </div>
