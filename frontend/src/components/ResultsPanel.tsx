@@ -173,7 +173,7 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `satchange_${result.location_id}_${result.id}.geojson`;
+    a.download = `orbiterra_${result.location_id}_${result.id}.geojson`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

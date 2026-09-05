@@ -14,7 +14,7 @@ export const Navbar: React.FC<NavbarProps> = ({ stats }) => {
           <Satellite size={22} />
         </div>
         <div>
-          <span className="brand-title">SatChange AI</span>
+          <span className="brand-title">ORBITERRA</span>
           <span className="brand-badge">SIH PROTOTYPE</span>
         </div>
       </div>

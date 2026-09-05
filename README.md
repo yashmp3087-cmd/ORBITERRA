@@ -1,4 +1,4 @@
-# SatChange AI — Semantic Retrieval & Multi-Temporal Change Analysis of Satellite Imagery
+# ORBITERRA — Semantic Retrieval & Multi-Temporal Change Analysis of Satellite Imagery
 ### Smart India Hackathon (SIH) — Full-Stack Working Prototype
 
 > **Project Title:** Semantic Retrieval and Multi-Temporal Change Analysis of Satellite Imagery  
@@ -15,8 +15,8 @@ Earth Observation satellites (Sentinel-2, Landsat, Cartosat) capture terabytes o
 2. **Slow Change Identification:** Manually spotting illegal deforestation, unauthorized construction, water body shrinkage, or unplanned road expansion across multi-temporal raster imagery is labor-intensive and prone to human oversight.
 3. **Lack of Automated Vectorization & Confidence Scoring:** Authorities require actionable vector polygons (GeoJSON/Shapefiles) with statistical confidence metrics and affected acreage for legal notice dispatch and enforcement.
 
-### The SatChange AI Solution
-**SatChange AI** provides a unified AI/CV and GIS dashboard that empowers decision-makers to:
+### The ORBITERRA Solution
+**ORBITERRA** provides a unified AI/CV and GIS dashboard that empowers decision-makers to:
 - **Search with Natural Language:** E.g., *"Find new buildings in Bengaluru tech corridor"*, *"Detect deforestation in Western Ghats"*, or *"Check reservoir shrinkage at Osmansagar"*.
 - **Multi-Temporal Differential Analysis:** Compares co-registered satellite image pairs across distinct timestamps ($T_1$ vs $T_2$) using adaptive morphological differencing and spectral index analysis ($\Delta\text{NDVI}$, $\Delta\text{NDBI}$, $\Delta\text{NDWI}$).
 - **Custom ROI Drawing on Live Map:** Draw custom rectangles or polygons directly on the GIS map to define any Region of Interest (ROI) with automatic GeoJSON clipping and AI re-analysis.
@@ -283,7 +283,7 @@ Returns historical change progression and time-series chart data (e.g. `LOC_BLR`
 ## 🎯 Smart India Hackathon Presentation Deck (PPT-Ready)
 
 ### Slide 1: Title & Problem Context
-- **Title:** SatChange AI: Semantic Satellite Imagery Retrieval & Multi-Temporal Change Analysis
+- **Title:** ORBITERRA: Semantic Satellite Imagery Retrieval & Multi-Temporal Change Analysis
 - **Problem:** Millions of satellite scenes exist, but extracting timely, legally actionable insights on illegal construction, deforestation, and water loss requires specialized GIS teams and days of manual review.
 
 ### Slide 2: Proposed Solution

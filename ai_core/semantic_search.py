@@ -325,7 +325,7 @@ def geocode_location_nominatim(query_text: str, timeout_sec: float = 1.5) -> Opt
         url = f"https://nominatim.openstreetmap.org/search?q={encoded}&format=json&limit=1"
         req = urllib.request.Request(
             url, 
-            headers={"User-Agent": "Cryptonex-Satellite-Search/1.0 (contact@cryptonex.io)"}
+            headers={"User-Agent": "ORBITERRA-Satellite-Search/1.0 (contact@orbiterra.io)"}
         )
         with urllib.request.urlopen(req, timeout=timeout_sec) as resp:
             if resp.status == 200:
@@ -371,7 +371,7 @@ def reverse_geocode_nominatim(lat: float, lon: float, timeout_sec: float = 2.0) 
         url = f"https://nominatim.openstreetmap.org/reverse?lat={lat}&lon={lon}&format=jsonv2"
         req = urllib.request.Request(
             url,
-            headers={"User-Agent": "Cryptonex-Satellite-Search/1.0 (contact@cryptonex.io)"}
+            headers={"User-Agent": "ORBITERRA-Satellite-Search/1.0 (contact@orbiterra.io)"}
         )
         with urllib.request.urlopen(req, timeout=timeout_sec) as resp:
             if resp.status == 200:

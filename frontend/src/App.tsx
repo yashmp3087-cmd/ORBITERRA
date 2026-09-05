@@ -440,7 +440,7 @@ export const App: React.FC = () => {
 
       <footer className="app-footer">
         <div>
-          <strong>SatChange AI</strong> &bull; Semantic Retrieval & Multi-Temporal Change Analysis of Satellite Imagery
+          <strong>ORBITERRA</strong> &bull; Semantic Retrieval & Multi-Temporal Change Analysis of Satellite Imagery
         </div>
         <div className="footer-tags">
           <span className="footer-pill">PyTorch / OpenCV / Rasterio</span>
