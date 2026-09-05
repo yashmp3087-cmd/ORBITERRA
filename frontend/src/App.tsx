@@ -5,7 +5,6 @@ import { SearchBar } from './components/SearchBar';
 import { BeforeAfterSlider } from './components/BeforeAfterSlider';
 import { MapView } from './components/MapView';
 import { ResultsPanel } from './components/ResultsPanel';
-import { AnalyticsChart } from './components/AnalyticsChart';
 import { 
   fetchScenarios, 
   fetchStats, 
@@ -435,8 +434,6 @@ export const App: React.FC = () => {
               isLoading={isLoading}
               onRunDetection={handleRerunDetection}
             />
-
-            <AnalyticsChart locationData={locationChanges} />
           </div>
         </div>
       </main>
