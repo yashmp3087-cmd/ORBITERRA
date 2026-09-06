@@ -306,99 +306,21 @@ export const App: React.FC = () => {
           type: 'info'
         });
 
-        const c_lat = geo.latitude;
-        const c_lng = geo.longitude;
-        setComparison({
-          id: `GEO_${Math.abs(Math.round(c_lat * 100))}_${Math.abs(Math.round(c_lng * 100))}`,
-          location_id: geo.location_id || 'UNSEEDED',
-          location_name: geo.name,
-          image_id_before: 'WAYBACK_2016',
-          image_id_after: 'CURRENT_2026',
-          image_before_url: '',
-          image_after_url: '',
-          primary_change_type: searchRes.parsed_intent?.target_change_type || 'Geographic Satellite View',
-          overall_confidence: 0.95,
-          confidence_percentage: '95.0%',
-          total_area_sq_m: 0,
-          total_area_hectares: 0,
-          regions_count: 0,
-          mask_url: '',
-          breakdown: {},
-          geojson: {
-            type: 'FeatureCollection',
-            features: [
-              {
-                type: 'Feature',
-                geometry: {
-                  type: 'Polygon',
-                  coordinates: [[
-                    [bbox[1], bbox[0]],
-                    [bbox[3], bbox[0]],
-                    [bbox[3], bbox[2]],
-                    [bbox[1], bbox[2]],
-                    [bbox[1], bbox[0]]
-                  ]]
-                },
-                id: `FEAT_${geo.name.replace(/\s+/g, '_')}`,
-                properties: {
-                  id: `FEAT_${geo.name.replace(/\s+/g, '_')}`,
-                  change_type: geo.name,
-                  confidence_score: 0.95,
-                  area_sq_m: 0,
-                  area_hectares: 0,
-                  color: '#00e5ff'
-                }
-              }
-            ]
-          },
-          detected_at: new Date().toISOString(),
-          is_custom_selection: true,
+        const targetType = searchRes.parsed_intent?.target_change_type;
+        const compResult = await compareScenes({
           custom_bbox: bbox,
-          centroid_lat: c_lat,
-          centroid_lng: c_lng,
-          google_maps_url: `https://www.google.com/maps?q=${c_lat},${c_lng}&z=16`,
-          google_earth_url: `https://earth.google.com/web/search/${c_lat},${c_lng}`,
-          raster_bounds: bbox,
-          timeline_events: [
-            {
-              date: '2016-04',
-              change_type: 'Baseline Survey',
-              area_hectares: 0.0,
-              confidence: 0.95,
-              notes: `Historical satellite basemap coverage available for ${geo.name}`
-            },
-            {
-              date: '2026-03',
-              change_type: 'Live Satellite View',
-              area_hectares: 0.0,
-              confidence: 0.95,
-              notes: `Live high-resolution ESRI World Imagery active for ${geo.name}`
-            }
-          ]
+          target_change_type: targetType,
+          location_name: geo.name
         });
+        setComparison(compResult);
 
         setLocationChanges({
-          location_id: 'CUSTOM',
+          location_id: compResult.location_id,
           location_name: geo.name,
           latitude: geo.latitude,
           longitude: geo.longitude,
-          total_historical_events: 2,
-          timeline: [
-            {
-              date: '2016-04',
-              change_type: 'Baseline Survey',
-              area_hectares: 0.0,
-              confidence: 0.95,
-              notes: `Historical satellite basemap coverage available for ${geo.name}`
-            },
-            {
-              date: '2026-03',
-              change_type: 'Live Satellite View',
-              area_hectares: 0.0,
-              confidence: 0.95,
-              notes: `Live high-resolution ESRI World Imagery active for ${geo.name}`
-            }
-          ],
+          total_historical_events: compResult.timeline_events?.length || 2,
+          timeline: compResult.timeline_events || [],
           summary_chart_data: []
         });
       } 

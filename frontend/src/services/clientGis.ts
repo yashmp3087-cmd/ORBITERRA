@@ -12,8 +12,7 @@ import {
   Scenario, 
   LocationChanges, 
   GlobalStats, 
-  GeoJsonCollection, 
-  TimelineEventItem 
+  GeoJsonCollection 
 } from '../types';
 
 // Built-in catalog scenarios matching backend samples/catalog.json
@@ -49,7 +48,7 @@ export const CLIENT_SCENARIOS: Scenario[] = [
     description: "Automated NDWI surface water extraction analyzing drought shrinkage, shoreline recession, and exposed lakebed islands."
   },
   {
-    scenario_id: "SCN_ROAD",
+    scenario_id: "SCN_HIGHWAY",
     title: "Expressway Corridor & Interchange Infrastructure",
     location_name: "Yamuna Expressway Agri-Belt, Uttar Pradesh",
     location_id: "LOC_EXP",
@@ -69,15 +68,17 @@ interface GazetteerEntry {
   aliases: string[];
   location_id?: string;
   has_catalog_imagery?: boolean;
+  feature_category?: string;
 }
 
 export const CLIENT_GAZETTEER: Record<string, GazetteerEntry> = {
+  // Cities
   pune: {
     name: "Pune, Maharashtra",
     lat: 18.5204,
     lng: 73.8567,
     bbox: [18.4400, 73.7600, 18.6000, 73.9600],
-    aliases: ["pune", "poona", "shivajinagar", "kothrud", "wakad", "hinjewadi", "hadapsar", "baner", "pimprichinchwad", "pimpri"],
+    aliases: ["pune", "poona", "shivajinagar", "kothrud", "wakad", "hinjewadi", "hadapsar", "baner", "pimpri-chinchwad", "pimpri"],
     location_id: "LOC_PUNE",
     has_catalog_imagery: false
   },
@@ -153,14 +154,79 @@ export const CLIENT_GAZETTEER: Record<string, GazetteerEntry> = {
     location_id: "LOC_JAI",
     has_catalog_imagery: false
   },
-  western_ghats: {
-    name: "Western Ghats Ecological Reserve, Kerala",
-    lat: 10.4520,
-    lng: 76.8830,
-    bbox: [10.4350, 76.8650, 10.4700, 76.9010],
-    aliases: ["western ghats", "ghats", "kerala", "rainforest", "silent valley", "idukki", "munnar", "wayanad"],
-    location_id: "LOC_WG",
-    has_catalog_imagery: true
+
+  // Rivers & Water Bodies
+  mutha_river: {
+    name: "Mutha River Basin, Pune, Maharashtra",
+    lat: 18.5158,
+    lng: 73.8415,
+    bbox: [18.4900, 73.8150, 18.5450, 73.8750],
+    aliases: ["mutha river", "mutha", "mula mutha", "mula-mutha", "mutha nadi", "river mutha"],
+    feature_category: "Water Body Shrinkage"
+  },
+  mula_river: {
+    name: "Mula River Corridor, Pune, Maharashtra",
+    lat: 18.5580,
+    lng: 73.8150,
+    bbox: [18.5350, 73.7850, 18.5800, 73.8450],
+    aliases: ["mula river", "mula nadi", "river mula"],
+    feature_category: "Water Body Shrinkage"
+  },
+  khadakwasla_dam: {
+    name: "Khadakwasla Dam & Reservoir, Pune, Maharashtra",
+    lat: 18.4350,
+    lng: 73.7650,
+    bbox: [18.4100, 73.7350, 18.4600, 73.7950],
+    aliases: ["khadakwasla", "khadakwasla dam", "khadakwasla lake", "khadakwasla reservoir"],
+    feature_category: "Water Body Shrinkage"
+  },
+  pashan_lake: {
+    name: "Pashan Lake, Pune, Maharashtra",
+    lat: 18.5370,
+    lng: 73.7860,
+    bbox: [18.5200, 73.7700, 18.5550, 73.8050],
+    aliases: ["pashan lake", "pashan water", "pashan wetland"],
+    feature_category: "Water Body Shrinkage"
+  },
+  ganga_river: {
+    name: "Ganges (Ganga) River Basin, Varanasi, Uttar Pradesh",
+    lat: 25.3176,
+    lng: 83.0062,
+    bbox: [25.2700, 82.9600, 25.3650, 83.0550],
+    aliases: ["ganga", "ganges", "ganga river", "river ganga", "holy ganga"],
+    feature_category: "Water Body Shrinkage"
+  },
+  yamuna_river: {
+    name: "Yamuna River Corridor, Delhi/Agra",
+    lat: 28.6200,
+    lng: 77.2500,
+    bbox: [28.5500, 77.2100, 28.7000, 77.3000],
+    aliases: ["yamuna river", "river yamuna", "yamuna basin", "yamuna floodplains"],
+    feature_category: "Water Body Shrinkage"
+  },
+  godavari_river: {
+    name: "Godavari River Basin, Nashik, Maharashtra",
+    lat: 19.9975,
+    lng: 73.7898,
+    bbox: [19.9600, 73.7500, 20.0350, 73.8300],
+    aliases: ["godavari", "godavari river", "river godavari"],
+    feature_category: "Water Body Shrinkage"
+  },
+  sabarmati_river: {
+    name: "Sabarmati Riverfront, Ahmedabad, Gujarat",
+    lat: 23.0300,
+    lng: 72.5800,
+    bbox: [22.9900, 72.5400, 23.0700, 72.6100],
+    aliases: ["sabarmati", "sabarmati river", "river sabarmati", "sabarmati riverfront"],
+    feature_category: "Water Body Shrinkage"
+  },
+  hooghly_river: {
+    name: "Hooghly River Channel, Kolkata, West Bengal",
+    lat: 22.5726,
+    lng: 88.3400,
+    bbox: [22.5200, 88.3000, 22.6300, 88.3800],
+    aliases: ["hooghly", "hooghly river", "river hooghly", "hugli"],
+    feature_category: "Water Body Shrinkage"
   },
   osmansagar: {
     name: "Osmansagar Freshwater Reservoir, Telangana",
@@ -169,67 +235,61 @@ export const CLIENT_GAZETTEER: Record<string, GazetteerEntry> = {
     bbox: [17.3750, 78.2850, 17.3990, 78.3110],
     aliases: ["osmansagar", "gandipet", "reservoir", "himayatsagar"],
     location_id: "LOC_OSM",
-    has_catalog_imagery: true
+    has_catalog_imagery: true,
+    feature_category: "Water Body Shrinkage"
   },
-  yamuna: {
+
+  // Roads & Expressways
+  pune_ring_road: {
+    name: "Pune Ring Road & Transit Corridor, Maharashtra",
+    lat: 18.5204,
+    lng: 73.8567,
+    bbox: [18.4600, 73.7800, 18.5800, 73.9300],
+    aliases: ["pune ring road", "ring road pune", "pune roads", "pune highway", "pune transit"],
+    feature_category: "Road Development"
+  },
+  mumbai_pune_expressway: {
+    name: "Mumbai-Pune Yashwantrao Chavan Expressway, Maharashtra",
+    lat: 18.7500,
+    lng: 73.4000,
+    bbox: [18.7000, 73.3000, 18.8200, 73.5000],
+    aliases: ["mumbai pune expressway", "mumbai-pune expressway", "pune mumbai expressway", "expressway pune"],
+    feature_category: "Road Development"
+  },
+  outer_ring_road_blr: {
+    name: "Outer Ring Road (ORR), Bengaluru, Karnataka",
+    lat: 12.9300,
+    lng: 77.6800,
+    bbox: [12.9000, 77.6400, 12.9650, 77.7200],
+    aliases: ["outer ring road", "orr", "bangalore orr", "bengaluru orr"],
+    feature_category: "Road Development"
+  },
+  yamuna_expressway: {
     name: "Yamuna Expressway Agri-Belt, Uttar Pradesh",
     lat: 27.9120,
     lng: 77.6250,
     bbox: [27.9000, 77.6120, 27.9240, 77.6380],
-    aliases: ["yamuna", "expressway", "agra", "mathura", "greater noida", "taj expressway"],
+    aliases: ["yamuna expressway", "taj expressway", "expressway agra", "greater noida expressway"],
     location_id: "LOC_EXP",
-    has_catalog_imagery: true
+    has_catalog_imagery: true,
+    feature_category: "Road Development"
   },
-  new_york: {
-    name: "New York City, USA",
-    lat: 40.7128,
-    lng: -74.0060,
-    bbox: [40.5500, -74.1500, 40.8500, -73.8500],
-    aliases: ["new york", "nyc", "manhattan", "brooklyn"],
-    location_id: "LOC_NYC",
-    has_catalog_imagery: false
-  },
-  london: {
-    name: "London, United Kingdom",
-    lat: 51.5074,
-    lng: -0.1278,
-    bbox: [51.3500, -0.3500, 51.6500, 0.1000],
-    aliases: ["london", "uk", "thames"],
-    location_id: "LOC_LON",
-    has_catalog_imagery: false
-  },
-  dubai: {
-    name: "Dubai, United Arab Emirates",
-    lat: 25.2048,
-    lng: 55.2708,
-    bbox: [24.9800, 55.0500, 25.3500, 55.4500],
-    aliases: ["dubai", "uae", "burj khalifa"],
-    location_id: "LOC_DXB",
-    has_catalog_imagery: false
-  },
-  singapore: {
-    name: "Singapore Island",
-    lat: 1.3521,
-    lng: 103.8198,
-    bbox: [1.2000, 103.6500, 1.4700, 104.0500],
-    aliases: ["singapore", "sg"],
-    location_id: "LOC_SIN",
-    has_catalog_imagery: false
-  },
-  tokyo: {
-    name: "Tokyo, Japan",
-    lat: 35.6762,
-    lng: 139.6503,
-    bbox: [35.5000, 139.4000, 35.8500, 139.9000],
-    aliases: ["tokyo", "japan"],
-    location_id: "LOC_TYO",
-    has_catalog_imagery: false
+
+  // Reserves & Nature
+  western_ghats: {
+    name: "Western Ghats Ecological Reserve, Kerala",
+    lat: 10.4520,
+    lng: 76.8830,
+    bbox: [10.4350, 76.8650, 10.4700, 76.9010],
+    aliases: ["western ghats", "ghats", "kerala", "rainforest", "silent valley", "idukki", "munnar", "wayanad"],
+    location_id: "LOC_WG",
+    has_catalog_imagery: true,
+    feature_category: "Vegetation Loss"
   }
 };
 
 /**
  * Query Esri World Geocoding Service directly from client.
- * Completely free, high accuracy, supports worldwide geographic names.
  */
 export async function geocodeWithEsri(query: string): Promise<{
   name: string;
@@ -317,14 +377,19 @@ export async function clientSideSearch(query: string, topK: number = 4): Promise
 
   // 1. Detect target change category
   let detectedType = 'General Spatial Query';
-  if (/building|construction|built-up|urban|expansion|concrete|campus|tech park|housing|residential/.test(cleanQ)) {
-    detectedType = 'New Construction';
-  } else if (/deforest|forest|tree|canopy|vegetation|logging|clearing|greenery/.test(cleanQ)) {
-    detectedType = 'Vegetation Loss';
-  } else if (/water|reservoir|lake|river|shrink|drought|dry|depletion|basin/.test(cleanQ)) {
-    detectedType = 'Water Body Shrinkage';
-  } else if (/road|highway|expressway|corridor|paved|transit|interchange|flyover/.test(cleanQ)) {
+  const isRoadTerm = /\b(roads?|highways?|expressways?|corridors?|paved|transit|interchange|flyover|asphalt|traffic)\b/.test(cleanQ);
+  const isWaterTerm = /\b(rivers?|waters?|reservoirs?|lakes?|drought|basin|streams?|waterbody|floodplains?|canal)\b/.test(cleanQ);
+  const isForestTerm = /\b(deforest|forests?|trees?|canopy|vegetation|logging|clearing|greenery|rainforest)\b/.test(cleanQ);
+  const isBuildingTerm = /\b(buildings?|constructions?|built-up|urban|expansion|concrete|campus|tech park|housing|residential)\b/.test(cleanQ);
+
+  if (isRoadTerm) {
     detectedType = 'Road Development';
+  } else if (isWaterTerm) {
+    detectedType = 'Water Body Shrinkage';
+  } else if (isForestTerm) {
+    detectedType = 'Vegetation Loss';
+  } else if (isBuildingTerm) {
+    detectedType = 'New Construction';
   }
 
   // 2. Check for numeric GPS coordinates in query (e.g. "18.52, 73.85")
@@ -357,19 +422,45 @@ export async function clientSideSearch(query: string, topK: number = 4): Promise
     };
   }
 
-  // 3. Check for matching catalog scenario
-  let matchedScenario: Scenario | null = null;
-  if (/bengaluru|bangalore|whitefield|tech corridor/.test(cleanQ) || (detectedType === 'New Construction' && !/pune|mumbai|delhi|jaipur|kolkata/.test(cleanQ))) {
-    matchedScenario = CLIENT_SCENARIOS.find(s => s.scenario_id === 'SCN_URBAN') || null;
-  } else if (/western ghats|ghats|kerala|rainforest|canopy/.test(cleanQ) || detectedType === 'Vegetation Loss') {
-    matchedScenario = CLIENT_SCENARIOS.find(s => s.scenario_id === 'SCN_FOREST') || null;
-  } else if (/osmansagar|reservoir|water|lake|drought/.test(cleanQ) || detectedType === 'Water Body Shrinkage') {
-    matchedScenario = CLIENT_SCENARIOS.find(s => s.scenario_id === 'SCN_WATER') || null;
-  } else if (/yamuna|expressway|highway|interchange/.test(cleanQ) || detectedType === 'Road Development') {
-    matchedScenario = CLIENT_SCENARIOS.find(s => s.scenario_id === 'SCN_ROAD') || null;
+  // 3. Handle pure thematic feature searches (e.g. "road", "roads", "river", "rivers", "water", "forest", "buildings")
+  const isPureThematicSearch = /^(find\s+|detect\s+|show\s+|search\s+|look\s+for\s+)?(roads?|highways?|expressways?|rivers?|waters?|lakes?|reservoirs?|water\s*bod(y|ies)|buildings?|constructions?|forests?|trees?|deforestations?)$/i.test(cleanQ);
+
+  if (isPureThematicSearch) {
+    let scenario: Scenario | null = null;
+    let message = "";
+
+    if (isRoadTerm) {
+      scenario = CLIENT_SCENARIOS.find(s => s.scenario_id === 'SCN_HIGHWAY') || null;
+      message = "Displaying expressway corridor, transit networks, and road development.";
+    } else if (isWaterTerm) {
+      scenario = CLIENT_SCENARIOS.find(s => s.scenario_id === 'SCN_WATER') || null;
+      message = "Displaying freshwater reservoir, shoreline recession, and river monitoring.";
+    } else if (isForestTerm) {
+      scenario = CLIENT_SCENARIOS.find(s => s.scenario_id === 'SCN_FOREST') || null;
+      message = "Displaying rainforest canopy clearing and ecological reserve monitoring.";
+    } else if (isBuildingTerm) {
+      scenario = CLIENT_SCENARIOS.find(s => s.scenario_id === 'SCN_URBAN') || null;
+      message = "Displaying urban built-up expansion and commercial tech park construction.";
+    }
+
+    return {
+      query,
+      parsed_intent: {
+        query,
+        tokens,
+        target_change_type: detectedType,
+        detected_location: null,
+        has_temporal_intent: true
+      },
+      results_count: scenario ? 1 : 0,
+      results: [],
+      suggested_scenario: scenario,
+      geocoded_location: null,
+      message
+    };
   }
 
-  // 4. Check Built-in Gazetteer
+  // 4. Check Built-in Gazetteer (Exact river names, road names, and cities)
   let matchedGeo: GazetteerEntry | null = null;
   for (const entry of Object.values(CLIENT_GAZETTEER)) {
     if (entry.aliases.some(alias => cleanQ.includes(alias))) {
@@ -378,25 +469,33 @@ export async function clientSideSearch(query: string, topK: number = 4): Promise
     }
   }
 
-  // If matched a specific gazetteer entry that is NOT catalog-seeded (e.g. Pune, Mumbai, Delhi, Jaipur),
-  // override scenario so we definitely navigate to the searched city!
-  if (matchedGeo && !matchedGeo.has_catalog_imagery) {
-    matchedScenario = null;
-  }
-
   if (matchedGeo) {
+    // If it's a catalog-seeded zone with no specific feature query, match that scenario
+    let suggestedScenario: Scenario | null = null;
+    if (matchedGeo.location_id === 'LOC_BLR' && (!isRoadTerm && !isWaterTerm)) {
+      suggestedScenario = CLIENT_SCENARIOS.find(s => s.scenario_id === 'SCN_URBAN') || null;
+    } else if (matchedGeo.location_id === 'LOC_WG' && (!isRoadTerm && !isWaterTerm)) {
+      suggestedScenario = CLIENT_SCENARIOS.find(s => s.scenario_id === 'SCN_FOREST') || null;
+    } else if (matchedGeo.location_id === 'LOC_OSM') {
+      suggestedScenario = CLIENT_SCENARIOS.find(s => s.scenario_id === 'SCN_WATER') || null;
+    } else if (matchedGeo.location_id === 'LOC_EXP') {
+      suggestedScenario = CLIENT_SCENARIOS.find(s => s.scenario_id === 'SCN_HIGHWAY') || null;
+    }
+
+    const targetCategory = matchedGeo.feature_category || detectedType;
+
     return {
       query,
       parsed_intent: {
         query,
         tokens,
-        target_change_type: detectedType,
+        target_change_type: targetCategory,
         detected_location: matchedGeo.name,
         has_temporal_intent: true
       },
-      results_count: matchedScenario ? 1 : 0,
+      results_count: suggestedScenario ? 1 : 0,
       results: [],
-      suggested_scenario: matchedScenario,
+      suggested_scenario: suggestedScenario,
       geocoded_location: {
         name: matchedGeo.name,
         latitude: matchedGeo.lat,
@@ -405,14 +504,20 @@ export async function clientSideSearch(query: string, topK: number = 4): Promise
         has_catalog_imagery: Boolean(matchedGeo.has_catalog_imagery),
         location_id: matchedGeo.location_id || null
       },
-      message: matchedScenario
+      message: suggestedScenario
         ? `Matched satellite scenario for ${matchedGeo.name}.`
-        : `Centering live satellite basemap on ${matchedGeo.name}.`
+        : `Centering live satellite basemap on ${matchedGeo.name} for ${targetCategory}.`
     };
   }
 
-  // 5. Dynamic Esri World Geocoding (with Nominatim fallback)
-  const esriResult = await geocodeWithEsri(cleanQ);
+  // 5. Clean query for location candidate extraction (strip change and stop words)
+  const queryWithoutFeatures = cleanQ
+    .replace(/\b(find|detect|show|search|where|is|are|new|recent|change|changes|satellite|imagery|image|images|map|view|monitoring)\b/g, ' ')
+    .replace(/\b(in|at|near|around|along|across|over|of|and|the|a|an)\b/g, ' ')
+    .trim();
+
+  // 6. Dynamic Esri World Geocoding (with Nominatim fallback)
+  const esriResult = await geocodeWithEsri(queryWithoutFeatures || cleanQ);
   if (esriResult) {
     return {
       query,
@@ -434,11 +539,11 @@ export async function clientSideSearch(query: string, topK: number = 4): Promise
         has_catalog_imagery: false,
         location_id: null
       },
-      message: `Located ${esriResult.name}. Centering live satellite basemap.`
+      message: `Located ${esriResult.name}. Analyzing ${detectedType} on satellite basemap.`
     };
   }
 
-  const nominatimResult = await geocodeWithNominatim(cleanQ);
+  const nominatimResult = await geocodeWithNominatim(queryWithoutFeatures || cleanQ);
   if (nominatimResult) {
     return {
       query,
@@ -460,11 +565,11 @@ export async function clientSideSearch(query: string, topK: number = 4): Promise
         has_catalog_imagery: false,
         location_id: null
       },
-      message: `Located ${nominatimResult.name}. Centering live satellite basemap.`
+      message: `Located ${nominatimResult.name}. Analyzing ${detectedType} on satellite basemap.`
     };
   }
 
-  // 6. Graceful Fallback if unknown
+  // 7. Graceful Fallback if completely unknown
   return {
     query,
     parsed_intent: {
@@ -478,17 +583,19 @@ export async function clientSideSearch(query: string, topK: number = 4): Promise
     results: [],
     suggested_scenario: null,
     geocoded_location: null,
-    message: `No satellite imagery matches found for "${query}". Try searching a city like "Pune", "Mumbai", "Delhi", "Bengaluru", or enter coordinates.`
+    message: `No satellite imagery matches found for "${query}". Try searching a city like "Pune", a river like "Mutha River", an expressway like "Yamuna Expressway", or a category like "road" or "river".`
   };
 }
 
 /**
- * Generate synthetic, realistic GeoJSON change polygons for any custom bounding box or polygon.
+ * Generate synthetic, realistic GeoJSON change polygons for any custom bounding box or polygon,
+ * custom-tailored to the requested change category (Road Development, Water Body Shrinkage, etc.)
  */
 export function generateClientAreaDetection(
   bbox: [number, number, number, number],
   geometry?: any,
-  locationName: string = "Custom Area"
+  locationName: string = "Custom Area",
+  targetCategory?: string
 ): CompareResult {
   const [minLat, minLon, maxLat, maxLon] = bbox;
   const cLat = Number(((minLat + maxLat) / 2).toFixed(6));
@@ -496,84 +603,244 @@ export function generateClientAreaDetection(
 
   const latDistKm = (maxLat - minLat) * 111.0;
   const lonDistKm = (maxLon - minLon) * 111.0 * Math.cos(cLat * Math.PI / 180);
-  const totalAreaHa = Number((Math.max(0.1, latDistKm * lonDistKm * 100)).toFixed(1));
+  const totalAreaHa = Number((Math.max(0.2, latDistKm * lonDistKm * 100)).toFixed(1));
   const totalAreaSqM = Math.round(totalAreaHa * 10000);
 
-  // Generate 3-4 realistic change polygons distributed inside the box
   const dLat = (maxLat - minLat);
   const dLon = (maxLon - minLon);
 
-  const features: GeoJsonCollection['features'] = [
-    {
-      type: "Feature",
-      id: "CLIENT_FEAT_1",
-      properties: {
-        id: "CLIENT_PROP_1",
-        change_type: "New Construction",
-        confidence_score: 0.94,
-        area_sq_m: Math.round(totalAreaSqM * 0.48),
-        area_hectares: Number((totalAreaHa * 0.48).toFixed(1)),
-        spectral_shift: { delta_ndvi: -0.32, delta_ndbi: 0.44 },
-        color: "#10b981"
+  const isRoad = targetCategory === 'Road Development' || /road|highway|expressway/i.test(locationName);
+  const isWater = targetCategory === 'Water Body Shrinkage' || /water|river|lake|reservoir|mutha|mula|ganga|yamuna/i.test(locationName);
+  const isForest = targetCategory === 'Vegetation Loss' || /forest|tree|canopy|deforest/i.test(locationName);
+
+  let primaryChangeType = "New Construction";
+  let features: GeoJsonCollection['features'] = [];
+  let breakdown: Record<string, number> = {};
+
+  if (isRoad) {
+    primaryChangeType = "Road Development";
+    breakdown = {
+      "Road Development": Number((totalAreaHa * 0.65).toFixed(1)),
+      "New Construction": Number((totalAreaHa * 0.22).toFixed(1)),
+      "Vegetation Loss": Number((totalAreaHa * 0.13).toFixed(1))
+    };
+    features = [
+      {
+        type: "Feature",
+        id: "ROAD_CORRIDOR_1",
+        properties: {
+          id: "ROAD_PROP_1",
+          change_type: "Road Development",
+          confidence_score: 0.95,
+          area_sq_m: Math.round(totalAreaSqM * 0.45),
+          area_hectares: Number((totalAreaHa * 0.45).toFixed(1)),
+          spectral_shift: { delta_ndvi: -0.28, delta_ndbi: 0.41 },
+          color: "#f59e0b"
+        },
+        geometry: {
+          type: "Polygon",
+          coordinates: [[
+            [minLon + dLon * 0.05, minLat + dLat * 0.42],
+            [minLon + dLon * 0.95, minLat + dLat * 0.58],
+            [minLon + dLon * 0.95, minLat + dLat * 0.68],
+            [minLon + dLon * 0.05, minLat + dLat * 0.52],
+            [minLon + dLon * 0.05, minLat + dLat * 0.42]
+          ]]
+        }
       },
-      geometry: {
-        type: "Polygon",
-        coordinates: [[
-          [minLon + dLon * 0.2, minLat + dLat * 0.25],
-          [minLon + dLon * 0.45, minLat + dLat * 0.25],
-          [minLon + dLon * 0.45, minLat + dLat * 0.55],
-          [minLon + dLon * 0.2, minLat + dLat * 0.55],
-          [minLon + dLon * 0.2, minLat + dLat * 0.25]
-        ]]
-      }
-    },
-    {
-      type: "Feature",
-      id: "CLIENT_FEAT_2",
-      properties: {
-        id: "CLIENT_PROP_2",
-        change_type: "Road Development",
-        confidence_score: 0.91,
-        area_sq_m: Math.round(totalAreaSqM * 0.32),
-        area_hectares: Number((totalAreaHa * 0.32).toFixed(1)),
-        spectral_shift: { delta_ndvi: -0.21, delta_ndbi: 0.35 },
-        color: "#f59e0b"
+      {
+        type: "Feature",
+        id: "ROAD_INTERCHANGE_2",
+        properties: {
+          id: "ROAD_PROP_2",
+          change_type: "Road Development",
+          confidence_score: 0.92,
+          area_sq_m: Math.round(totalAreaSqM * 0.20),
+          area_hectares: Number((totalAreaHa * 0.20).toFixed(1)),
+          spectral_shift: { delta_ndvi: -0.19, delta_ndbi: 0.35 },
+          color: "#f59e0b"
+        },
+        geometry: {
+          type: "Polygon",
+          coordinates: [[
+            [minLon + dLon * 0.40, minLat + dLat * 0.25],
+            [minLon + dLon * 0.65, minLat + dLat * 0.25],
+            [minLon + dLon * 0.65, minLat + dLat * 0.50],
+            [minLon + dLon * 0.40, minLat + dLat * 0.50],
+            [minLon + dLon * 0.40, minLat + dLat * 0.25]
+          ]]
+        }
       },
-      geometry: {
-        type: "Polygon",
-        coordinates: [[
-          [minLon + dLon * 0.55, minLat + dLat * 0.15],
-          [minLon + dLon * 0.85, minLat + dLat * 0.15],
-          [minLon + dLon * 0.85, minLat + dLat * 0.35],
-          [minLon + dLon * 0.55, minLat + dLat * 0.35],
-          [minLon + dLon * 0.55, minLat + dLat * 0.15]
-        ]]
+      {
+        type: "Feature",
+        id: "ROAD_BUILTUP_3",
+        properties: {
+          id: "ROAD_PROP_3",
+          change_type: "New Construction",
+          confidence_score: 0.89,
+          area_sq_m: Math.round(totalAreaSqM * 0.22),
+          area_hectares: Number((totalAreaHa * 0.22).toFixed(1)),
+          spectral_shift: { delta_ndvi: -0.12, delta_ndbi: 0.28 },
+          color: "#10b981"
+        },
+        geometry: {
+          type: "Polygon",
+          coordinates: [[
+            [minLon + dLon * 0.68, minLat + dLat * 0.65],
+            [minLon + dLon * 0.88, minLat + dLat * 0.65],
+            [minLon + dLon * 0.88, minLat + dLat * 0.85],
+            [minLon + dLon * 0.68, minLat + dLat * 0.85],
+            [minLon + dLon * 0.68, minLat + dLat * 0.65]
+          ]]
+        }
       }
-    },
-    {
-      type: "Feature",
-      id: "CLIENT_FEAT_3",
-      properties: {
-        id: "CLIENT_PROP_3",
-        change_type: "Vegetation Loss",
-        confidence_score: 0.88,
-        area_sq_m: Math.round(totalAreaSqM * 0.20),
-        area_hectares: Number((totalAreaHa * 0.20).toFixed(1)),
-        spectral_shift: { delta_ndvi: -0.42, delta_ndwi: -0.15 },
-        color: "#ef4444"
+    ];
+  } else if (isWater) {
+    primaryChangeType = "Water Body Shrinkage";
+    breakdown = {
+      "Water Body Shrinkage": Number((totalAreaHa * 0.70).toFixed(1)),
+      "Vegetation Loss": Number((totalAreaHa * 0.18).toFixed(1)),
+      "New Construction": Number((totalAreaHa * 0.12).toFixed(1))
+    };
+    features = [
+      {
+        type: "Feature",
+        id: "RIVER_CHANNEL_1",
+        properties: {
+          id: "RIVER_PROP_1",
+          change_type: "Water Body Shrinkage",
+          confidence_score: 0.96,
+          area_sq_m: Math.round(totalAreaSqM * 0.52),
+          area_hectares: Number((totalAreaHa * 0.52).toFixed(1)),
+          spectral_shift: { delta_ndwi: -0.48, delta_ndvi: -0.15 },
+          color: "#00e5ff"
+        },
+        geometry: {
+          type: "Polygon",
+          coordinates: [[
+            [minLon + dLon * 0.10, minLat + dLat * 0.30],
+            [minLon + dLon * 0.40, minLat + dLat * 0.45],
+            [minLon + dLon * 0.85, minLat + dLat * 0.40],
+            [minLon + dLon * 0.90, minLat + dLat * 0.55],
+            [minLon + dLon * 0.40, minLat + dLat * 0.60],
+            [minLon + dLon * 0.10, minLat + dLat * 0.42],
+            [minLon + dLon * 0.10, minLat + dLat * 0.30]
+          ]]
+        }
       },
-      geometry: {
-        type: "Polygon",
-        coordinates: [[
-          [minLon + dLon * 0.50, minLat + dLat * 0.55],
-          [minLon + dLon * 0.80, minLat + dLat * 0.55],
-          [minLon + dLon * 0.80, minLat + dLat * 0.85],
-          [minLon + dLon * 0.50, minLat + dLat * 0.85],
-          [minLon + dLon * 0.50, minLat + dLat * 0.55]
-        ]]
+      {
+        type: "Feature",
+        id: "RIVER_SHORELINE_2",
+        properties: {
+          id: "RIVER_PROP_2",
+          change_type: "Water Body Shrinkage",
+          confidence_score: 0.93,
+          area_sq_m: Math.round(totalAreaSqM * 0.18),
+          area_hectares: Number((totalAreaHa * 0.18).toFixed(1)),
+          spectral_shift: { delta_ndwi: -0.35, delta_ndvi: -0.10 },
+          color: "#00e5ff"
+        },
+        geometry: {
+          type: "Polygon",
+          coordinates: [[
+            [minLon + dLon * 0.45, minLat + dLat * 0.18],
+            [minLon + dLon * 0.70, minLat + dLat * 0.18],
+            [minLon + dLon * 0.70, minLat + dLat * 0.35],
+            [minLon + dLon * 0.45, minLat + dLat * 0.35],
+            [minLon + dLon * 0.45, minLat + dLat * 0.18]
+          ]]
+        }
       }
-    }
-  ];
+    ];
+  } else if (isForest) {
+    primaryChangeType = "Vegetation Loss";
+    breakdown = {
+      "Vegetation Loss": Number((totalAreaHa * 0.76).toFixed(1)),
+      "New Construction": Number((totalAreaHa * 0.14).toFixed(1)),
+      "Road Development": Number((totalAreaHa * 0.10).toFixed(1))
+    };
+    features = [
+      {
+        type: "Feature",
+        id: "FOREST_LOSS_1",
+        properties: {
+          id: "FOREST_PROP_1",
+          change_type: "Vegetation Loss",
+          confidence_score: 0.95,
+          area_sq_m: Math.round(totalAreaSqM * 0.55),
+          area_hectares: Number((totalAreaHa * 0.55).toFixed(1)),
+          spectral_shift: { delta_ndvi: -0.52, delta_ndwi: -0.22 },
+          color: "#ef4444"
+        },
+        geometry: {
+          type: "Polygon",
+          coordinates: [[
+            [minLon + dLon * 0.20, minLat + dLat * 0.20],
+            [minLon + dLon * 0.60, minLat + dLat * 0.20],
+            [minLon + dLon * 0.60, minLat + dLat * 0.60],
+            [minLon + dLon * 0.20, minLat + dLat * 0.60],
+            [minLon + dLon * 0.20, minLat + dLat * 0.20]
+          ]]
+        }
+      }
+    ];
+  } else {
+    // Default: New Construction
+    primaryChangeType = "New Construction";
+    breakdown = {
+      "New Construction": Number((totalAreaHa * 0.60).toFixed(1)),
+      "Road Development": Number((totalAreaHa * 0.25).toFixed(1)),
+      "Vegetation Loss": Number((totalAreaHa * 0.15).toFixed(1))
+    };
+    features = [
+      {
+        type: "Feature",
+        id: "CLIENT_FEAT_1",
+        properties: {
+          id: "CLIENT_PROP_1",
+          change_type: "New Construction",
+          confidence_score: 0.94,
+          area_sq_m: Math.round(totalAreaSqM * 0.48),
+          area_hectares: Number((totalAreaHa * 0.48).toFixed(1)),
+          spectral_shift: { delta_ndvi: -0.32, delta_ndbi: 0.44 },
+          color: "#10b981"
+        },
+        geometry: {
+          type: "Polygon",
+          coordinates: [[
+            [minLon + dLon * 0.2, minLat + dLat * 0.25],
+            [minLon + dLon * 0.45, minLat + dLat * 0.25],
+            [minLon + dLon * 0.45, minLat + dLat * 0.55],
+            [minLon + dLon * 0.2, minLat + dLat * 0.55],
+            [minLon + dLon * 0.2, minLat + dLat * 0.25]
+          ]]
+        }
+      },
+      {
+        type: "Feature",
+        id: "CLIENT_FEAT_2",
+        properties: {
+          id: "CLIENT_PROP_2",
+          change_type: "Road Development",
+          confidence_score: 0.91,
+          area_sq_m: Math.round(totalAreaSqM * 0.32),
+          area_hectares: Number((totalAreaHa * 0.32).toFixed(1)),
+          spectral_shift: { delta_ndvi: -0.21, delta_ndbi: 0.35 },
+          color: "#f59e0b"
+        },
+        geometry: {
+          type: "Polygon",
+          coordinates: [[
+            [minLon + dLon * 0.55, minLat + dLat * 0.15],
+            [minLon + dLon * 0.85, minLat + dLat * 0.15],
+            [minLon + dLon * 0.85, minLat + dLat * 0.35],
+            [minLon + dLon * 0.55, minLat + dLat * 0.35],
+            [minLon + dLon * 0.55, minLat + dLat * 0.15]
+          ]]
+        }
+      }
+    ];
+  }
 
   return {
     id: `DET_CLI_${Math.abs(Math.round(cLat * 100))}_${Math.abs(Math.round(cLng * 100))}`,
@@ -583,18 +850,14 @@ export function generateClientAreaDetection(
     image_id_after: "CURRENT_2026",
     image_before_url: "",
     image_after_url: "",
-    primary_change_type: "New Construction",
+    primary_change_type: primaryChangeType,
     overall_confidence: 0.942,
     confidence_percentage: "94.2%",
     total_area_sq_m: totalAreaSqM,
     total_area_hectares: totalAreaHa,
     regions_count: features.length,
     mask_url: "",
-    breakdown: {
-      "New Construction": Number((totalAreaHa * 0.48).toFixed(1)),
-      "Road Development": Number((totalAreaHa * 0.32).toFixed(1)),
-      "Vegetation Loss": Number((totalAreaHa * 0.20).toFixed(1))
-    },
+    breakdown,
     geojson: {
       type: "FeatureCollection",
       features
@@ -619,20 +882,20 @@ export function generateClientAreaDetection(
       },
       {
         date: "2021-03",
-        change_type: "Urban Expansion",
+        change_type: isRoad ? "Right of Way Clearing" : (isWater ? "Shoreline Delineation" : "Ground Leveling"),
         area_hectares: Number((totalAreaHa * 0.4).toFixed(1)),
         confidence: 0.92,
-        notes: `Corridor ground grading and structural preparation in ${locationName}`,
+        notes: `Initial infrastructure and satellite spectral variance detected in ${locationName}`,
         badge_color: "#10b981",
         is_custom: true
       },
       {
         date: "2026-03",
-        change_type: "New Construction",
+        change_type: primaryChangeType,
         area_hectares: totalAreaHa,
         confidence: 0.95,
-        notes: `Active user Region of Interest in ${locationName} (${totalAreaHa} ha) verified on Current Esri Imagery`,
-        badge_color: "#10b981",
+        notes: `Active user detection in ${locationName} (${totalAreaHa} ha) verified on Current Esri Imagery`,
+        badge_color: isRoad ? "#f59e0b" : (isWater ? "#00e5ff" : (isForest ? "#ef4444" : "#10b981")),
         is_custom: true
       }
     ]
@@ -649,6 +912,7 @@ export function getClientScenarioComparison(scenarioId: string): CompareResult {
   return generateClientAreaDetection(
     geo.bbox,
     undefined,
-    scenario.location_name
+    scenario.location_name,
+    scenario.primary_change_type
   );
 }

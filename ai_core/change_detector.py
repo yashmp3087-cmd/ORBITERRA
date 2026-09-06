@@ -383,6 +383,7 @@ class ChangeDetectionEngine:
 def generate_custom_area_detection(
     custom_bbox: List[float],
     custom_geometry: Optional[Dict[str, Any]] = None,
+    target_change_type: Optional[str] = None,
     resolution_m: float = 10.0
 ) -> Dict[str, Any]:
     """
@@ -406,11 +407,22 @@ def generate_custom_area_detection(
     
     # Geographic & spectral context mapping to full 6-category taxonomy
     grp_keys = list(CHANGE_TAXONOMY.keys())
-    primary_grp_idx = int(abs(c_lat * 7.1 + c_lon * 13.3)) % len(grp_keys)
-    primary_group = grp_keys[primary_grp_idx]
+    if target_change_type:
+        tgt_low = target_change_type.lower()
+        if any(w in tgt_low for w in ["road", "highway", "transport", "expressway"]):
+            primary_group = "🛣️ Roads & Transportation"
+        elif any(w in tgt_low for w in ["water", "river", "lake", "reservoir", "shrinkage", "spread"]):
+            primary_group = "💧 Water Bodies"
+        elif any(w in tgt_low for w in ["building", "built", "construction", "industrial", "house"]):
+            primary_group = "🏢 Built-up Area"
+        elif any(w in tgt_low for w in ["vegetation", "forest", "tree", "canopy", "green"]):
+            primary_group = "🌳 Vegetation & Land Use"
+    else:
+        primary_group = grp_keys[int(abs(c_lat * 7.1 + c_lon * 13.3)) % len(grp_keys)]
+
+    primary_grp_idx = grp_keys.index(primary_group)
     group_items = CHANGE_TAXONOMY[primary_group]
     primary_item = group_items[int(abs(c_lat * 3.7 + c_lon * 5.9)) % len(group_items)]
-    
     primary_change_type = primary_item["name"]
     
     # Number of distinct detected change clusters (2 to 5 depending on area)

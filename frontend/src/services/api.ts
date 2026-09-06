@@ -53,6 +53,8 @@ export async function compareScenes(params: {
   location_id?: string;
   custom_bbox?: number[];
   custom_geometry?: any;
+  target_change_type?: string;
+  location_name?: string;
 }): Promise<CompareResult> {
   try {
     const res = await fetch(`${API_BASE}/api/compare`, {
@@ -76,7 +78,8 @@ export async function compareScenes(params: {
     return generateClientAreaDetection(
       params.custom_bbox as [number, number, number, number],
       params.custom_geometry,
-      'Custom Area Selection'
+      params.location_name || 'Custom Area Selection',
+      params.target_change_type
     );
   }
 

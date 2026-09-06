@@ -55,6 +55,7 @@ class CompareRequest(BaseModel):
     scenario_id: Optional[str] = Field(None, example="SCN_URBAN")
     custom_bbox: Optional[List[float]] = Field(None, example=[12.965, 77.720, 12.978, 77.735])
     custom_geometry: Optional[Dict[str, Any]] = Field(None, description="GeoJSON geometry of custom selection")
+    target_change_type: Optional[str] = Field(None, description="Target change category like Road Development or Water Body Shrinkage")
 
 class TimelineEventItem(BaseModel):
     date: str

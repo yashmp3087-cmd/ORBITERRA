@@ -162,6 +162,7 @@ def compare_scenes(request: CompareRequest, db: Session = Depends(get_db)):
             analysis = generate_custom_area_detection(
                 custom_bbox=request.custom_bbox,
                 custom_geometry=request.custom_geometry,
+                target_change_type=request.target_change_type,
                 resolution_m=10.0
             )
 
