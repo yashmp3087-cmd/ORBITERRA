@@ -312,6 +312,49 @@ GEOGRAPHIC_GAZETTEER = {
 }
 
 
+def geocode_location_esri(query_text: str, timeout_sec: float = 3.0) -> Optional[Dict[str, Any]]:
+    """
+    Attempts dynamic geocoding via Esri World Geocoding Service.
+    High reliability, no rate limits, returns precise extent bbox.
+    """
+    try:
+        clean_q = query_text.strip()
+        if not clean_q or len(clean_q) < 2:
+            return None
+        encoded = urllib.parse.quote(clean_q)
+        url = f"https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=json&singleLine={encoded}&maxLocations=1"
+        req = urllib.request.Request(
+            url,
+            headers={"User-Agent": "ORBITERRA-Satellite-Search/1.0 (contact@orbiterra.io)"}
+        )
+        with urllib.request.urlopen(req, timeout=timeout_sec) as resp:
+            if resp.status == 200:
+                data = json.loads(resp.read().decode('utf-8'))
+                candidates = data.get("candidates", [])
+                if candidates:
+                    top = candidates[0]
+                    loc = top.get("location", {})
+                    lat = float(loc.get("y", 0.0))
+                    lon = float(loc.get("x", 0.0))
+                    extent = top.get("extent", {})
+                    min_lat = float(extent.get("ymin", lat - 0.03))
+                    min_lon = float(extent.get("xmin", lon - 0.03))
+                    max_lat = float(extent.get("ymax", lat + 0.03))
+                    max_lon = float(extent.get("xmax", lon + 0.03))
+                    addr = top.get("address", clean_q.title())
+                    return {
+                        "name": addr,
+                        "latitude": lat,
+                        "longitude": lon,
+                        "bbox": [min_lat, min_lon, max_lat, max_lon],
+                        "has_catalog_imagery": False,
+                        "location_id": None
+                    }
+    except Exception as e:
+        logger.debug(f"Esri geocoding note for '{query_text}': {e}")
+    return None
+
+
 def geocode_location_nominatim(query_text: str, timeout_sec: float = 1.5) -> Optional[Dict[str, Any]]:
     """
     Attempts dynamic geocoding via OpenStreetMap Nominatim with a fast timeout.
@@ -543,9 +586,9 @@ class SemanticRetrievalEngine:
                         del geocoded["aliases"]
                         break
                 
-                # If still not found, query Nominatim
+                # If still not found, query Esri World Geocoder (with Nominatim fallback)
                 if not geocoded:
-                    geocoded = geocode_location_nominatim(candidate_name)
+                    geocoded = geocode_location_esri(candidate_name) or geocode_location_nominatim(candidate_name)
                     
                 # If geocoding failed or was offline, create basic entity so we never fallback to demo data
                 if not geocoded:
