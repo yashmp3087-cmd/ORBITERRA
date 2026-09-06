@@ -239,13 +239,153 @@ export const CLIENT_GAZETTEER: Record<string, GazetteerEntry> = {
     feature_category: "Water Body Shrinkage"
   },
 
+  // Educational Institutions & Landmarks (Pune & National)
+  sppu: {
+    name: "Savitribai Phule Pune University (SPPU), Pune, Maharashtra",
+    lat: 18.5528,
+    lng: 73.8266,
+    bbox: [18.5420, 73.8180, 18.5620, 73.8350],
+    aliases: ["sppu", "pune university", "savitribai phule pune university", "university of pune", "ganeshkhind", "sppu campus"],
+    feature_category: "New Construction"
+  },
+  coep: {
+    name: "College of Engineering Pune (COEP Tech), Shivajinagar, Maharashtra",
+    lat: 18.5306,
+    lng: 73.8568,
+    bbox: [18.5250, 73.8500, 18.5350, 73.8620],
+    aliases: ["coep", "coep tech", "college of engineering pune", "coep hostel"],
+    feature_category: "New Construction"
+  },
+  fc_road: {
+    name: "Fergusson College Road (FC Road), Deccan, Pune, Maharashtra",
+    lat: 18.5180,
+    lng: 73.8420,
+    bbox: [18.5120, 73.8380, 18.5250, 73.8460],
+    aliases: ["fc road", "f.c. road", "fergusson college road", "fergusson road", "fc road pune"],
+    feature_category: "Road Development"
+  },
+  jm_road: {
+    name: "Jangali Maharaj Road (JM Road), Shivajinagar, Pune, Maharashtra",
+    lat: 18.5240,
+    lng: 73.8490,
+    bbox: [18.5180, 73.8450, 18.5300, 73.8530],
+    aliases: ["jm road", "j.m. road", "jangali maharaj road", "jangli maharaj road", "jm road pune"],
+    feature_category: "Road Development"
+  },
+  sinhagad_road: {
+    name: "Sinhagad Road Arterial Corridor, Pune, Maharashtra",
+    lat: 18.4750,
+    lng: 73.8250,
+    bbox: [18.4500, 73.8050, 18.5000, 73.8450],
+    aliases: ["sinhagad road", "sinhgad road", "sinhagad corridor"],
+    feature_category: "Road Development"
+  },
+  karve_road: {
+    name: "Karve Road / Kothrud Corridor, Pune, Maharashtra",
+    lat: 18.5050,
+    lng: 73.8250,
+    bbox: [18.4950, 73.8100, 18.5150, 73.8400],
+    aliases: ["karve road", "karve nagar", "kothrud road"],
+    feature_category: "Road Development"
+  },
+  sb_road: {
+    name: "Senapati Bapat Road (SB Road), Pune, Maharashtra",
+    lat: 18.5320,
+    lng: 73.8320,
+    bbox: [18.5220, 73.8250, 18.5420, 73.8400],
+    aliases: ["sb road", "s.b. road", "senapati bapat road"],
+    feature_category: "Road Development"
+  },
+  swargate: {
+    name: "Swargate Transit Hub & Multimodal Interchange, Pune, Maharashtra",
+    lat: 18.5010,
+    lng: 73.8580,
+    bbox: [18.4920, 73.8480, 18.5100, 73.8680],
+    aliases: ["swargate", "swargate bus stand", "swargate chowk"],
+    feature_category: "Road Development"
+  },
+  deccan: {
+    name: "Deccan Gymkhana & Sambhaji Park, Pune, Maharashtra",
+    lat: 18.5160,
+    lng: 73.8420,
+    bbox: [18.5080, 73.8340, 18.5240, 73.8500],
+    aliases: ["deccan", "deccan gymkhana", "sambhaji park", "goodluck chowk"],
+    feature_category: "Road Development"
+  },
+
+  // Tech Parks & Pune Localities
+  hinjewadi: {
+    name: "Rajiv Gandhi Infotech Park (Hinjewadi), Pune, Maharashtra",
+    lat: 18.5920,
+    lng: 73.7380,
+    bbox: [18.5700, 73.7000, 18.6150, 73.7600],
+    aliases: ["hinjewadi", "hinjawadi", "hinjewadi it park", "rajiv gandhi infotech park", "hinjewadi phase 1", "hinjewadi phase 2", "hinjewadi phase 3"],
+    feature_category: "New Construction"
+  },
+  magarpatta: {
+    name: "Magarpatta Cybercity, Hadapsar, Pune, Maharashtra",
+    lat: 18.5140,
+    lng: 73.9280,
+    bbox: [18.5050, 73.9180, 18.5230, 73.9380],
+    aliases: ["magarpatta", "magarpatta city", "cybercity"],
+    feature_category: "New Construction"
+  },
+  viman_nagar: {
+    name: "Viman Nagar Urban Belt & Airport Corridor, Pune, Maharashtra",
+    lat: 18.5680,
+    lng: 73.9140,
+    bbox: [18.5580, 73.9040, 18.5780, 73.9240],
+    aliases: ["viman nagar", "vimannagar", "phoenix marketcity pune"],
+    feature_category: "New Construction"
+  },
+  kharadi: {
+    name: "EON Free Zone / Kharadi IT Corridor, Pune, Maharashtra",
+    lat: 18.5520,
+    lng: 73.9480,
+    bbox: [18.5400, 73.9350, 18.5650, 73.9600],
+    aliases: ["kharadi", "eon", "eon it park", "world trade center pune"],
+    feature_category: "New Construction"
+  },
+  baner: {
+    name: "Baner High-Street & Commercial Corridor, Pune, Maharashtra",
+    lat: 18.5590,
+    lng: 73.7870,
+    bbox: [18.5480, 73.7750, 18.5700, 73.8000],
+    aliases: ["baner", "baner road", "high street baner"],
+    feature_category: "New Construction"
+  },
+  aundh: {
+    name: "Aundh Residential & Tech Sector, Pune, Maharashtra",
+    lat: 18.5600,
+    lng: 73.8080,
+    bbox: [18.5500, 73.7980, 18.5700, 73.8180],
+    aliases: ["aundh", "westend mall", "iti road aundh"],
+    feature_category: "New Construction"
+  },
+  kothrud: {
+    name: "Kothrud Urban Belt, Pune, Maharashtra",
+    lat: 18.5070,
+    lng: 73.8070,
+    bbox: [18.4950, 73.7950, 18.5200, 73.8200],
+    aliases: ["kothrud", "chandani chowk", "paud road"],
+    feature_category: "New Construction"
+  },
+  wakad: {
+    name: "Wakad Commercial Belt, Pune, Maharashtra",
+    lat: 18.5980,
+    lng: 73.7630,
+    bbox: [18.5880, 73.7500, 18.6080, 73.7750],
+    aliases: ["wakad", "datta mandir road", "dange chowk"],
+    feature_category: "New Construction"
+  },
+
   // Roads & Expressways
   pune_ring_road: {
     name: "Pune Ring Road & Transit Corridor, Maharashtra",
     lat: 18.5204,
     lng: 73.8567,
     bbox: [18.4600, 73.7800, 18.5800, 73.9300],
-    aliases: ["pune ring road", "ring road pune", "pune roads", "pune highway", "pune transit"],
+    aliases: ["pune ring road", "ring road pune", "pune roads", "pune highway", "pune transit", "pune road", "roads in pune", "road in pune"],
     feature_category: "Road Development"
   },
   mumbai_pune_expressway: {
@@ -289,7 +429,73 @@ export const CLIENT_GAZETTEER: Record<string, GazetteerEntry> = {
 };
 
 /**
- * Query Esri World Geocoding Service directly from client.
+ * Query Photon (Komoot OpenStreetMap search) with Pune / regional proximity bias.
+ * Fully supports CORS ('Access-Control-Allow-Origin: *') in browser environments.
+ */
+export async function geocodeWithPhoton(
+  query: string, 
+  biasLat: number = 18.5204, 
+  biasLon: number = 73.8567
+): Promise<{
+  name: string;
+  latitude: number;
+  longitude: number;
+  bbox: [number, number, number, number];
+} | null> {
+  try {
+    const cleanQ = query.trim();
+    if (!cleanQ || cleanQ.length < 2) return null;
+
+    const encoded = encodeURIComponent(cleanQ);
+    const url = `https://photon.komoot.io/api/?q=${encoded}&lat=${biasLat}&lon=${biasLon}&limit=3`;
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data?.features || !Array.isArray(data.features) || data.features.length === 0) return null;
+
+    const feature = data.features[0];
+    const coords = feature.geometry?.coordinates;
+    if (!coords || coords.length < 2) return null;
+
+    const lng = coords[0];
+    const lat = coords[1];
+
+    const props = feature.properties || {};
+    const namePart = props.name || cleanQ;
+    const locParts: string[] = [];
+    if (props.district) locParts.push(props.district);
+    if (props.city && props.city !== props.district) locParts.push(props.city);
+    if (props.state && props.state !== props.city) locParts.push(props.state);
+    if (props.country && props.country !== props.state) locParts.push(props.country);
+
+    const fullName = locParts.length > 0 ? `${namePart}, ${locParts.join(', ')}` : namePart;
+
+    const extent = props.extent;
+    let bbox: [number, number, number, number];
+    if (extent && extent.length === 4) {
+      const minX = Math.min(extent[0], extent[2]);
+      const maxX = Math.max(extent[0], extent[2]);
+      const minY = Math.min(extent[1], extent[3]);
+      const maxY = Math.max(extent[1], extent[3]);
+      bbox = [minY, minX, maxY, maxX];
+    } else {
+      bbox = [lat - 0.03, lng - 0.03, lat + 0.03, lng + 0.03];
+    }
+
+    return {
+      name: fullName,
+      latitude: lat,
+      longitude: lng,
+      bbox
+    };
+  } catch (err) {
+    console.warn('[CLIENT_GIS] Photon geocoding warning:', err);
+    return null;
+  }
+}
+
+/**
+ * Query Esri World Geocoding Service directly from client with location proximity bias.
  */
 export async function geocodeWithEsri(query: string): Promise<{
   name: string;
@@ -298,13 +504,24 @@ export async function geocodeWithEsri(query: string): Promise<{
   bbox: [number, number, number, number];
 } | null> {
   try {
-    const encoded = encodeURIComponent(query.trim());
-    const url = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=json&singleLine=${encoded}&maxLocations=1`;
+    const cleanQ = query.trim();
+    if (!cleanQ || cleanQ.length < 2) return null;
+
+    // Prevent short acronyms from resolving to random global hamlets (e.g. 'sppu' -> 'Spu' in Brazil)
+    const isShortAcronym = cleanQ.length <= 4 && !/\s/.test(cleanQ);
+    const searchQuery = isShortAcronym ? `${cleanQ} Pune India` : cleanQ;
+    const encoded = encodeURIComponent(searchQuery);
+
+    const url = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=json&singleLine=${encoded}&location=73.8567,18.5204&maxLocations=3`;
     const res = await fetch(url);
     if (!res.ok) return null;
     const data = await res.json();
-    const candidate = data?.candidates?.[0];
-    if (!candidate || !candidate.location) return null;
+    const candidates = data?.candidates || [];
+    if (candidates.length === 0) return null;
+
+    // Reject low score candidates
+    const candidate = candidates.find((c: any) => (c.score || 0) >= 75) || candidates[0];
+    if (!candidate || !candidate.location || (candidate.score || 0) < 60) return null;
 
     const lat = candidate.location.y;
     const lng = candidate.location.x;
@@ -315,7 +532,7 @@ export async function geocodeWithEsri(query: string): Promise<{
     const maxLon = extent?.xmax ?? lng + 0.04;
 
     return {
-      name: candidate.address || query.trim(),
+      name: candidate.address || cleanQ,
       latitude: lat,
       longitude: lng,
       bbox: [minLat, minLon, maxLat, maxLon]
@@ -426,46 +643,108 @@ export async function clientSideSearch(query: string, topK: number = 4): Promise
   const isPureThematicSearch = /^(find\s+|detect\s+|show\s+|search\s+|look\s+for\s+)?(roads?|highways?|expressways?|rivers?|waters?|lakes?|reservoirs?|water\s*bod(y|ies)|buildings?|constructions?|forests?|trees?|deforestations?)$/i.test(cleanQ);
 
   if (isPureThematicSearch) {
-    let scenario: Scenario | null = null;
-    let message = "";
-
     if (isRoadTerm) {
-      scenario = CLIENT_SCENARIOS.find(s => s.scenario_id === 'SCN_HIGHWAY') || null;
-      message = "Displaying expressway corridor, transit networks, and road development.";
-    } else if (isWaterTerm) {
-      scenario = CLIENT_SCENARIOS.find(s => s.scenario_id === 'SCN_WATER') || null;
-      message = "Displaying freshwater reservoir, shoreline recession, and river monitoring.";
-    } else if (isForestTerm) {
-      scenario = CLIENT_SCENARIOS.find(s => s.scenario_id === 'SCN_FOREST') || null;
-      message = "Displaying rainforest canopy clearing and ecological reserve monitoring.";
-    } else if (isBuildingTerm) {
-      scenario = CLIENT_SCENARIOS.find(s => s.scenario_id === 'SCN_URBAN') || null;
-      message = "Displaying urban built-up expansion and commercial tech park construction.";
-    }
-
-    return {
-      query,
-      parsed_intent: {
+      return {
         query,
-        tokens,
-        target_change_type: detectedType,
-        detected_location: null,
-        has_temporal_intent: true
-      },
-      results_count: scenario ? 1 : 0,
-      results: [],
-      suggested_scenario: scenario,
-      geocoded_location: null,
-      message
-    };
+        parsed_intent: {
+          query,
+          tokens,
+          target_change_type: 'Road Development',
+          detected_location: 'Pune Road & Transit Corridor, Maharashtra',
+          has_temporal_intent: true
+        },
+        results_count: 0,
+        results: [],
+        suggested_scenario: null,
+        geocoded_location: {
+          name: 'Pune Road & Arterial Transit Network, Maharashtra',
+          latitude: 18.5204,
+          longitude: 73.8567,
+          bbox: [18.4600, 73.7800, 18.5800, 73.9300],
+          has_catalog_imagery: false,
+          location_id: null
+        },
+        message: 'Centering satellite basemap on Pune Road & Transit Corridor for Road Development.'
+      };
+    } else if (isWaterTerm) {
+      return {
+        query,
+        parsed_intent: {
+          query,
+          tokens,
+          target_change_type: 'Water Body Shrinkage',
+          detected_location: 'Mutha River Basin, Pune, Maharashtra',
+          has_temporal_intent: true
+        },
+        results_count: 0,
+        results: [],
+        suggested_scenario: null,
+        geocoded_location: {
+          name: 'Mutha River Basin & Riparian Waterway, Pune',
+          latitude: 18.5158,
+          longitude: 73.8415,
+          bbox: [18.4800, 73.8000, 18.5450, 73.8750],
+          has_catalog_imagery: false,
+          location_id: null
+        },
+        message: 'Centering satellite basemap on Mutha River Basin for Water Body Shrinkage.'
+      };
+    } else if (isForestTerm) {
+      const scenario = CLIENT_SCENARIOS.find(s => s.scenario_id === 'SCN_FOREST') || null;
+      return {
+        query,
+        parsed_intent: {
+          query,
+          tokens,
+          target_change_type: 'Vegetation Loss',
+          detected_location: 'Western Ghats Ecological Reserve, Kerala',
+          has_temporal_intent: true
+        },
+        results_count: scenario ? 1 : 0,
+        results: [],
+        suggested_scenario: scenario,
+        geocoded_location: null,
+        message: 'Displaying rainforest canopy clearing and ecological reserve monitoring.'
+      };
+    } else if (isBuildingTerm) {
+      return {
+        query,
+        parsed_intent: {
+          query,
+          tokens,
+          target_change_type: 'New Construction',
+          detected_location: 'Pune Urban Expansion & Built-up Belt, Maharashtra',
+          has_temporal_intent: true
+        },
+        results_count: 0,
+        results: [],
+        suggested_scenario: null,
+        geocoded_location: {
+          name: 'Pune Metropolitan Built-up Corridor, Maharashtra',
+          latitude: 18.5204,
+          longitude: 73.8567,
+          bbox: [18.4800, 73.8000, 18.5600, 73.9100],
+          has_catalog_imagery: false,
+          location_id: null
+        },
+        message: 'Centering satellite basemap on Pune Urban Corridor for New Construction.'
+      };
+    }
   }
 
-  // 4. Check Built-in Gazetteer (Exact river names, road names, and cities)
+  // 4. Check Built-in Gazetteer (Exact river names, road names, SPPU, COEP, and cities)
+  // Evaluates longest matching alias first to prevent short city names from shadowing specific landmarks
   let matchedGeo: GazetteerEntry | null = null;
+  let bestAliasLen = 0;
   for (const entry of Object.values(CLIENT_GAZETTEER)) {
-    if (entry.aliases.some(alias => cleanQ.includes(alias))) {
-      matchedGeo = entry;
-      break;
+    for (const alias of entry.aliases) {
+      const isMatch = cleanQ === alias || 
+        (alias.length >= 3 && cleanQ.includes(alias)) || 
+        new RegExp(`(^|\\s)${alias.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&')}(\\s|$)`, 'i').test(cleanQ);
+      if (isMatch && alias.length > bestAliasLen) {
+        bestAliasLen = alias.length;
+        matchedGeo = entry;
+      }
     }
   }
 
@@ -516,7 +795,35 @@ export async function clientSideSearch(query: string, topK: number = 4): Promise
     .replace(/\b(in|at|near|around|along|across|over|of|and|the|a|an)\b/g, ' ')
     .trim();
 
-  // 6. Dynamic Esri World Geocoding (with Nominatim fallback)
+  // 6. Dynamic Geocoding Pipeline:
+  // Step 6a: Photon (Komoot OSM) with Pune proximity bias & CORS support
+  const photonResult = await geocodeWithPhoton(queryWithoutFeatures || cleanQ);
+  if (photonResult) {
+    return {
+      query,
+      parsed_intent: {
+        query,
+        tokens,
+        target_change_type: detectedType,
+        detected_location: photonResult.name,
+        has_temporal_intent: true
+      },
+      results_count: 0,
+      results: [],
+      suggested_scenario: null,
+      geocoded_location: {
+        name: photonResult.name,
+        latitude: photonResult.latitude,
+        longitude: photonResult.longitude,
+        bbox: photonResult.bbox,
+        has_catalog_imagery: false,
+        location_id: null
+      },
+      message: `Located ${photonResult.name}. Analyzing ${detectedType} on satellite basemap.`
+    };
+  }
+
+  // Step 6b: Esri World Geocoder with location proximity bias
   const esriResult = await geocodeWithEsri(queryWithoutFeatures || cleanQ);
   if (esriResult) {
     return {
@@ -543,6 +850,7 @@ export async function clientSideSearch(query: string, topK: number = 4): Promise
     };
   }
 
+  // Step 6c: OpenStreetMap Nominatim fallback
   const nominatimResult = await geocodeWithNominatim(queryWithoutFeatures || cleanQ);
   if (nominatimResult) {
     return {

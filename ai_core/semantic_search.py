@@ -130,13 +130,193 @@ GEOGRAPHIC_GAZETTEER = {
         "location_id": None
     },
     "pune": {
-        "aliases": ["pune", "poona", "hinjewadi", "shivajinagar", "kothrud"],
+        "aliases": ["pune", "poona", "shivajinagar", "swargate", "deccan"],
         "name": "Pune, Maharashtra",
         "latitude": 18.5204,
         "longitude": 73.8567,
         "bbox": [18.4200, 73.7500, 18.6200, 73.9500],
         "has_catalog_imagery": False,
         "location_id": None
+    },
+    "sppu": {
+        "aliases": ["sppu", "pune university", "savitribai phule pune university", "university of pune", "ganeshkhind", "sppu campus"],
+        "name": "Savitribai Phule Pune University (SPPU), Pune, Maharashtra",
+        "latitude": 18.5528,
+        "longitude": 73.8266,
+        "bbox": [18.5420, 73.8180, 18.5620, 73.8350],
+        "has_catalog_imagery": False,
+        "location_id": None,
+        "feature_category": "New Construction"
+    },
+    "coep": {
+        "aliases": ["coep", "coep tech", "college of engineering pune", "coep hostel"],
+        "name": "College of Engineering Pune (COEP Tech), Shivajinagar, Maharashtra",
+        "latitude": 18.5306,
+        "longitude": 73.8568,
+        "bbox": [18.5250, 73.8500, 18.5350, 73.8620],
+        "has_catalog_imagery": False,
+        "location_id": None,
+        "feature_category": "New Construction"
+    },
+    "fc_road": {
+        "aliases": ["fc road", "f.c. road", "fergusson college road", "fergusson road", "fc road pune"],
+        "name": "Fergusson College Road (FC Road), Deccan, Pune, Maharashtra",
+        "latitude": 18.5180,
+        "longitude": 73.8420,
+        "bbox": [18.5120, 73.8380, 18.5250, 73.8460],
+        "has_catalog_imagery": False,
+        "location_id": None,
+        "feature_category": "Road Development"
+    },
+    "jm_road": {
+        "aliases": ["jm road", "j.m. road", "jangali maharaj road", "jangli maharaj road", "jm road pune"],
+        "name": "Jangali Maharaj Road (JM Road), Shivajinagar, Pune, Maharashtra",
+        "latitude": 18.5240,
+        "longitude": 73.8490,
+        "bbox": [18.5180, 73.8450, 18.5300, 73.8530],
+        "has_catalog_imagery": False,
+        "location_id": None,
+        "feature_category": "Road Development"
+    },
+    "sinhagad_road": {
+        "aliases": ["sinhagad road", "sinhgad road", "sinhagad corridor"],
+        "name": "Sinhagad Road Arterial Corridor, Pune, Maharashtra",
+        "latitude": 18.4750,
+        "longitude": 73.8250,
+        "bbox": [18.4500, 73.8050, 18.5000, 73.8450],
+        "has_catalog_imagery": False,
+        "location_id": None,
+        "feature_category": "Road Development"
+    },
+    "pune_ring_road": {
+        "aliases": ["pune ring road", "ring road pune", "pune roads", "pune highway", "pune transit", "pune road", "roads in pune", "road in pune"],
+        "name": "Pune Ring Road & Transit Corridor, Maharashtra",
+        "latitude": 18.5204,
+        "longitude": 73.8567,
+        "bbox": [18.4600, 73.7800, 18.5800, 73.9300],
+        "has_catalog_imagery": False,
+        "location_id": None,
+        "feature_category": "Road Development"
+    },
+    "mutha_river": {
+        "aliases": ["mutha river", "mutha", "mula mutha", "mula-mutha", "mutha nadi", "river mutha", "pune river", "river in pune", "rivers in pune"],
+        "name": "Mutha River Basin & Riparian Corridor, Pune, Maharashtra",
+        "latitude": 18.5158,
+        "longitude": 73.8415,
+        "bbox": [18.4800, 73.8000, 18.5450, 73.8750],
+        "has_catalog_imagery": False,
+        "location_id": None,
+        "feature_category": "Water Body Shrinkage"
+    },
+    "mula_river": {
+        "aliases": ["mula river", "mula", "river mula", "mula nadi"],
+        "name": "Mula River Basin & Corridor, Pune, Maharashtra",
+        "latitude": 18.5600,
+        "longitude": 73.8150,
+        "bbox": [18.5350, 73.7850, 18.5800, 73.8450],
+        "has_catalog_imagery": False,
+        "location_id": None,
+        "feature_category": "Water Body Shrinkage"
+    },
+    "khadakwasla": {
+        "aliases": ["khadakwasla", "khadakwasla dam", "khadakwasla lake", "khadakwasla reservoir"],
+        "name": "Khadakwasla Dam & Reservoir, Pune, Maharashtra",
+        "latitude": 18.4350,
+        "longitude": 73.7650,
+        "bbox": [18.4100, 73.7350, 18.4600, 73.7950],
+        "has_catalog_imagery": False,
+        "location_id": None,
+        "feature_category": "Water Body Shrinkage"
+    },
+    "pashan_lake": {
+        "aliases": ["pashan lake", "pashan water", "pashan wetland", "pashan"],
+        "name": "Pashan Lake Wetland, Pune, Maharashtra",
+        "latitude": 18.5370,
+        "longitude": 73.7860,
+        "bbox": [18.5200, 73.7700, 18.5550, 73.8050],
+        "has_catalog_imagery": False,
+        "location_id": None,
+        "feature_category": "Water Body Shrinkage"
+    },
+    "hinjewadi": {
+        "aliases": ["hinjewadi", "hinjawadi", "hinjewadi it park", "rajiv gandhi infotech park", "hinjewadi phase 1", "hinjewadi phase 2", "hinjewadi phase 3"],
+        "name": "Rajiv Gandhi Infotech Park (Hinjewadi), Pune, Maharashtra",
+        "latitude": 18.5920,
+        "longitude": 73.7380,
+        "bbox": [18.5700, 73.7000, 18.6150, 73.7600],
+        "has_catalog_imagery": False,
+        "location_id": None,
+        "feature_category": "New Construction"
+    },
+    "magarpatta": {
+        "aliases": ["magarpatta", "magarpatta city", "cybercity"],
+        "name": "Magarpatta Cybercity, Hadapsar, Pune, Maharashtra",
+        "latitude": 18.5140,
+        "longitude": 73.9280,
+        "bbox": [18.5050, 73.9180, 18.5230, 73.9380],
+        "has_catalog_imagery": False,
+        "location_id": None,
+        "feature_category": "New Construction"
+    },
+    "viman_nagar": {
+        "aliases": ["viman nagar", "vimannagar", "phoenix marketcity pune"],
+        "name": "Viman Nagar Urban Belt & Airport Corridor, Pune, Maharashtra",
+        "latitude": 18.5680,
+        "longitude": 73.9140,
+        "bbox": [18.5580, 73.9040, 18.5780, 73.9240],
+        "has_catalog_imagery": False,
+        "location_id": None,
+        "feature_category": "New Construction"
+    },
+    "kharadi": {
+        "aliases": ["kharadi", "eon", "eon it park", "world trade center pune"],
+        "name": "EON Free Zone / Kharadi IT Corridor, Pune, Maharashtra",
+        "latitude": 18.5520,
+        "longitude": 73.9480,
+        "bbox": [18.5400, 73.9350, 18.5650, 73.9600],
+        "has_catalog_imagery": False,
+        "location_id": None,
+        "feature_category": "New Construction"
+    },
+    "baner": {
+        "aliases": ["baner", "baner road", "high street baner"],
+        "name": "Baner High-Street & Commercial Corridor, Pune, Maharashtra",
+        "latitude": 18.5590,
+        "longitude": 73.7870,
+        "bbox": [18.5480, 73.7750, 18.5700, 73.8000],
+        "has_catalog_imagery": False,
+        "location_id": None,
+        "feature_category": "New Construction"
+    },
+    "aundh": {
+        "aliases": ["aundh", "westend mall", "iti road aundh"],
+        "name": "Aundh Residential & Tech Sector, Pune, Maharashtra",
+        "latitude": 18.5600,
+        "longitude": 73.8080,
+        "bbox": [18.5500, 73.7980, 18.5700, 73.8180],
+        "has_catalog_imagery": False,
+        "location_id": None,
+        "feature_category": "New Construction"
+    },
+    "kothrud": {
+        "aliases": ["kothrud", "chandani chowk", "paud road"],
+        "name": "Kothrud Urban Belt, Pune, Maharashtra",
+        "latitude": 18.5070,
+        "longitude": 73.8070,
+        "bbox": [18.4950, 73.7950, 18.5200, 73.8200],
+        "has_catalog_imagery": False,
+        "location_id": None,
+        "feature_category": "New Construction"
+    },
+    "wakad": {
+        "aliases": ["wakad", "datta mandir road", "dange chowk"],
+        "name": "Wakad Commercial Belt, Pune, Maharashtra",
+        "latitude": 18.5980,
+        "longitude": 73.7630,
+        "bbox": [18.5880, 73.7500, 18.6080, 73.7750],
+        "has_catalog_imagery": False,
+        "location_id": None,
+        "feature_category": "New Construction"
     },
     "ahmedabad": {
         "aliases": ["ahmedabad", "gujarat", "gandhinagar", "sabarmati"],
@@ -312,17 +492,80 @@ GEOGRAPHIC_GAZETTEER = {
 }
 
 
-def geocode_location_esri(query_text: str, timeout_sec: float = 3.0) -> Optional[Dict[str, Any]]:
+def geocode_location_photon(query_text: str, bias_lat: float = 18.5204, bias_lon: float = 73.8567, timeout_sec: float = 3.0) -> Optional[Dict[str, Any]]:
     """
-    Attempts dynamic geocoding via Esri World Geocoding Service.
-    High reliability, no rate limits, returns precise extent bbox.
+    Attempts dynamic geocoding via Photon (Komoot OSM search) with Pune / regional proximity bias.
+    Excels at landmarks, universities (SPPU), colleges (COEP), roads, rivers, and POIs.
     """
     try:
         clean_q = query_text.strip()
         if not clean_q or len(clean_q) < 2:
             return None
         encoded = urllib.parse.quote(clean_q)
-        url = f"https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=json&singleLine={encoded}&maxLocations=1"
+        url = f"https://photon.komoot.io/api/?q={encoded}&lat={bias_lat}&lon={bias_lon}&limit=3"
+        req = urllib.request.Request(
+            url,
+            headers={"User-Agent": "ORBITERRA-Satellite-Search/1.0 (contact@orbiterra.io)"}
+        )
+        with urllib.request.urlopen(req, timeout=timeout_sec) as resp:
+            if resp.status == 200:
+                data = json.loads(resp.read().decode('utf-8'))
+                features = data.get("features", [])
+                if features:
+                    top = features[0]
+                    coords = top.get("geometry", {}).get("coordinates", [])
+                    if len(coords) >= 2:
+                        lon = float(coords[0])
+                        lat = float(coords[1])
+                        props = top.get("properties", {})
+                        name_part = props.get("name") or clean_q.title()
+                        loc_parts = []
+                        if props.get("district"):
+                            loc_parts.append(props["district"])
+                        if props.get("city") and props.get("city") != props.get("district"):
+                            loc_parts.append(props["city"])
+                        if props.get("state") and props.get("state") != props.get("city"):
+                            loc_parts.append(props["state"])
+                        if props.get("country") and props.get("country") != props.get("state"):
+                            loc_parts.append(props["country"])
+                        full_name = f"{name_part}, {', '.join(loc_parts)}" if loc_parts else name_part
+
+                        extent = props.get("extent")
+                        if extent and len(extent) == 4:
+                            min_lon = min(float(extent[0]), float(extent[2]))
+                            max_lon = max(float(extent[0]), float(extent[2]))
+                            min_lat = min(float(extent[1]), float(extent[3]))
+                            max_lat = max(float(extent[1]), float(extent[3]))
+                            bbox = [min_lat, min_lon, max_lat, max_lon]
+                        else:
+                            bbox = [lat - 0.03, lon - 0.03, lat + 0.03, lon + 0.03]
+
+                        return {
+                            "name": full_name,
+                            "latitude": lat,
+                            "longitude": lon,
+                            "bbox": bbox,
+                            "has_catalog_imagery": False,
+                            "location_id": None
+                        }
+    except Exception as e:
+        logger.debug(f"Photon geocoding note for '{query_text}': {e}")
+    return None
+
+
+def geocode_location_esri(query_text: str, timeout_sec: float = 3.0) -> Optional[Dict[str, Any]]:
+    """
+    Attempts dynamic geocoding via Esri World Geocoding Service with location proximity bias.
+    High reliability, no rate limits, returns precise extent bbox.
+    """
+    try:
+        clean_q = query_text.strip()
+        if not clean_q or len(clean_q) < 2:
+            return None
+        # Disambiguate short acronyms
+        search_query = f"{clean_q} Pune India" if (len(clean_q) <= 4 and " " not in clean_q) else clean_q
+        encoded = urllib.parse.quote(search_query)
+        url = f"https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=json&singleLine={encoded}&location=73.8567,18.5204&maxLocations=3"
         req = urllib.request.Request(
             url,
             headers={"User-Agent": "ORBITERRA-Satellite-Search/1.0 (contact@orbiterra.io)"}
@@ -332,7 +575,9 @@ def geocode_location_esri(query_text: str, timeout_sec: float = 3.0) -> Optional
                 data = json.loads(resp.read().decode('utf-8'))
                 candidates = data.get("candidates", [])
                 if candidates:
-                    top = candidates[0]
+                    top = next((c for c in candidates if (c.get("score") or 0) >= 75), candidates[0])
+                    if (top.get("score") or 0) < 60:
+                        return None
                     loc = top.get("location", {})
                     lat = float(loc.get("y", 0.0))
                     lon = float(loc.get("x", 0.0))
@@ -561,34 +806,57 @@ class SemanticRetrievalEngine:
             except Exception:
                 pass
 
-        # 3. Geographic Gazetteer Match
+        # 3. Handle pure thematic feature searches (e.g. "road", "river") without jumping to distant states
+        is_pure_thematic = bool(re.match(r'^(?:find\s+|detect\s+|show\s+|search\s+|look\s+for\s+)?(?:roads?|highways?|expressways?|rivers?|waters?|lakes?|reservoirs?|water\s*bod(?:y|ies)|buildings?|constructions?|forests?|trees?|deforestations?)$', query_clean, re.I))
+        if is_pure_thematic and not geocoded:
+            if primary_intent == "Road Development":
+                matched_loc_key = "pune_ring_road"
+                geocoded = dict(GEOGRAPHIC_GAZETTEER["pune_ring_road"])
+                if "aliases" in geocoded:
+                    del geocoded["aliases"]
+            elif primary_intent == "Water Body Shrinkage":
+                matched_loc_key = "mutha_river"
+                geocoded = dict(GEOGRAPHIC_GAZETTEER["mutha_river"])
+                if "aliases" in geocoded:
+                    del geocoded["aliases"]
+
+        # 4. Geographic Gazetteer Match (Longest matching alias first)
         if not geocoded:
+            best_alias_len = 0
             for loc_key, loc_info in GEOGRAPHIC_GAZETTEER.items():
                 for alias in loc_info["aliases"]:
-                    if re.search(rf'\b{re.escape(alias)}\b', query_clean):
-                        matched_loc_key = loc_key
-                        geocoded = dict(loc_info)
-                        del geocoded["aliases"]
-                        break
-                if geocoded:
-                    break
+                    if re.search(rf'\b{re.escape(alias)}\b', query_clean) or query_clean == alias:
+                        if len(alias) > best_alias_len:
+                            best_alias_len = len(alias)
+                            matched_loc_key = loc_key
+                            geocoded = dict(loc_info)
+                            if "aliases" in geocoded:
+                                del geocoded["aliases"]
 
-        # 4. Dynamic Location Candidate & Geocoding
+        # 5. Dynamic Location Candidate & Geocoding (Photon -> Esri -> Nominatim)
         if not geocoded:
             candidate_name = self.extract_location_candidate(query_clean)
             if candidate_name:
                 matched_loc_key = candidate_name
                 # Check gazetteer with candidate tokens
+                best_cand_len = 0
                 for loc_key, loc_info in GEOGRAPHIC_GAZETTEER.items():
-                    if any(re.search(rf'\b{re.escape(a)}\b', candidate_name) for a in loc_info["aliases"]):
-                        matched_loc_key = loc_key
-                        geocoded = dict(loc_info)
-                        del geocoded["aliases"]
-                        break
+                    for a in loc_info["aliases"]:
+                        if re.search(rf'\b{re.escape(a)}\b', candidate_name):
+                            if len(a) > best_cand_len:
+                                best_cand_len = len(a)
+                                matched_loc_key = loc_key
+                                geocoded = dict(loc_info)
+                                if "aliases" in geocoded:
+                                    del geocoded["aliases"]
                 
-                # If still not found, query Esri World Geocoder (with Nominatim fallback)
+                # Dynamic geocoding pipeline with Pune/India proximity bias
                 if not geocoded:
-                    geocoded = geocode_location_esri(candidate_name) or geocode_location_nominatim(candidate_name)
+                    geocoded = (
+                        geocode_location_photon(candidate_name) or 
+                        geocode_location_esri(candidate_name) or 
+                        geocode_location_nominatim(candidate_name)
+                    )
                     
                 # If geocoding failed or was offline, create basic entity so we never fallback to demo data
                 if not geocoded:
