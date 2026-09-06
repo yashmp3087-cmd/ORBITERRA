@@ -169,15 +169,15 @@ def compare_scenes(request: CompareRequest, db: Session = Depends(get_db)):
 
             custom_timeline = [
                 {
-                    "date": "2021-03",
+                    "date": "2016-04",
                     "change_type": "Baseline Survey",
                     "area_hectares": 0.0,
                     "confidence": 0.95,
-                    "notes": f"Historical satellite basemap coverage recorded for {resolved_name}",
+                    "notes": f"Historical satellite basemap coverage recorded for {resolved_name} (Esri Wayback 2016)",
                     "is_custom": True
                 },
                 {
-                    "date": "2024-03",
+                    "date": "2026-03",
                     "change_type": analysis["primary_change_type"],
                     "area_hectares": analysis["total_area_hectares"],
                     "confidence": analysis["overall_confidence"],
@@ -195,8 +195,8 @@ def compare_scenes(request: CompareRequest, db: Session = Depends(get_db)):
                 "id": f"DET_{uuid.uuid4().hex[:8].upper()}",
                 "location_id": f"CUSTOM_{abs(int(c_lat*100))}_{abs(int(c_lng*100))}",
                 "location_name": resolved_name,
-                "image_id_before": "BASEMAP_2021",
-                "image_id_after": "BASEMAP_CURRENT",
+                "image_id_before": "WAYBACK_2016",
+                "image_id_after": "CURRENT_2026",
                 "image_before_url": "",
                 "image_after_url": "",
                 "primary_change_type": analysis["primary_change_type"],

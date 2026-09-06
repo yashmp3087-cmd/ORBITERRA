@@ -30,7 +30,80 @@ interface MapViewProps {
   rasterBounds?: [number, number, number, number];
   onClearSelection?: () => void;
   locationName?: string;
+  initialBeforeYear?: string;
+  initialAfterYear?: string;
 }
+
+/**
+ * HISTORICAL VS. CURRENT SATELLITE IMAGERY SOURCE ARCHITECTURE:
+ * 
+ * 1. Historical Baseline Imagery ("Before" panel & Single Map baseline):
+ *    Powered by Esri World Imagery Wayback Archive (time-enabled WMTS tile services).
+ *    Wayback provides authentic, high-resolution global satellite captures
+ *    stretching from 2014 to 2026. Users can select any historical baseline year
+ *    (e.g., 2014, 2016, 2018, 2020, 2021, 2023, 2024).
+ * 
+ * 2. Current Satellite Imagery ("After" panel & Single Map overlay):
+ *    Powered by the latest 2026 Esri World Imagery / Wayback release,
+ *    capturing contemporary urban development, infrastructure, and landscape.
+ * 
+ * 3. AI Change Polygons:
+ *    Rendered on geojsonPane (zIndex: 500) over the current satellite imagery
+ *    to visually demarcate physical differences (new construction, roads, canopy change).
+ * 
+ * 4. Reference Labels:
+ *    Esri World Boundaries, Places & Transportation overlay on labelsPane (zIndex: 450).
+ */
+export const WAYBACK_YEARS: Record<string, { year: string; label: string; date: string; url: string }> = {
+  '2014': {
+    year: '2014',
+    label: '2014 (Feb)',
+    date: '2014-02-20',
+    url: 'https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/10/{z}/{y}/{x}'
+  },
+  '2016': {
+    year: '2016',
+    label: '2016 (Apr)',
+    date: '2016-04-20',
+    url: 'https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/388/{z}/{y}/{x}'
+  },
+  '2018': {
+    year: '2018',
+    label: '2018 (Nov)',
+    date: '2018-11-29',
+    url: 'https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/239/{z}/{y}/{x}'
+  },
+  '2020': {
+    year: '2020',
+    label: '2020 (Dec)',
+    date: '2020-12-16',
+    url: 'https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/29260/{z}/{y}/{x}'
+  },
+  '2021': {
+    year: '2021',
+    label: '2021 (Dec)',
+    date: '2021-12-21',
+    url: 'https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/26120/{z}/{y}/{x}'
+  },
+  '2023': {
+    year: '2023',
+    label: '2023 (Dec)',
+    date: '2023-12-07',
+    url: 'https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/56102/{z}/{y}/{x}'
+  },
+  '2024': {
+    year: '2024',
+    label: '2024 (Dec)',
+    date: '2024-12-12',
+    url: 'https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/16453/{z}/{y}/{x}'
+  },
+  '2026': {
+    year: '2026',
+    label: '2026 (Current)',
+    date: '2026-08-05',
+    url: 'https://wayback.maptiles.arcgis.com/arcgis/rest/services/World_Imagery/WMTS/1.0.0/default028mm/MapServer/tile/26334/{z}/{y}/{x}'
+  }
+};
 
 const TILE_LAYERS = {
   esri: {
@@ -71,7 +144,9 @@ export const MapView: React.FC<MapViewProps> = ({
   isAnalyzingArea,
   onSelectArea,
   onClearSelection,
-  locationName
+  locationName,
+  initialBeforeYear,
+  initialAfterYear
 }) => {
   const beforeUrl = satelliteImageUrlBefore || '';
   const afterUrl = satelliteImageUrlAfter || satelliteImageUrl || '';
@@ -81,6 +156,8 @@ export const MapView: React.FC<MapViewProps> = ({
   // Mode: single map or synced dual-map comparison
   const [mapLayout, setMapLayout] = useState<'single' | 'dual'>('dual');
   const [baseMapType, setBaseMapType] = useState<'esri' | 'dark'>('esri');
+  const [beforeYear, setBeforeYear] = useState<string>(initialBeforeYear || '2016');
+  const [afterYear, setAfterYear] = useState<string>(initialAfterYear || '2026');
   const [layerOpacity, setLayerOpacity] = useState<number>(1.0); // 0 = 100% before, 1 = 100% after
   const [drawMode, setDrawMode] = useState<'idle' | 'box' | 'polygon'>('idle');
   const [drawnBboxInfo, setDrawnBboxInfo] = useState<string | null>(null);
@@ -93,6 +170,7 @@ export const MapView: React.FC<MapViewProps> = ({
   const singleGeojsonRef = useRef<L.GeoJSON | null>(null);
   const singleDrawGroupRef = useRef<L.LayerGroup | null>(null);
   const singleBaseTileRef = useRef<L.TileLayer | null>(null);
+  const singleAfterTileRef = useRef<L.TileLayer | null>(null);
   const singleLabelsRef = useRef<L.TileLayer[]>([]);
 
   // Dual Map Refs
@@ -167,11 +245,26 @@ export const MapView: React.FC<MapViewProps> = ({
 
     setupCustomPanes(map);
 
-    const baseTile = L.tileLayer(TILE_LAYERS[baseMapType].url, {
-      attribution: TILE_LAYERS[baseMapType].attribution,
+    // Historical Baseline Tile Layer
+    const beforeTileUrl = baseMapType === 'esri'
+      ? (WAYBACK_YEARS[beforeYear]?.url || WAYBACK_YEARS['2016'].url)
+      : TILE_LAYERS.dark.url;
+    const baseTile = L.tileLayer(beforeTileUrl, {
+      attribution: 'Esri Wayback Historical Archive (' + beforeYear + ')',
       maxZoom: 19
     }).addTo(map);
     singleBaseTileRef.current = baseTile;
+
+    // Current Tile Layer Overlay with crossfade opacity
+    const afterTileUrl = baseMapType === 'esri'
+      ? (WAYBACK_YEARS[afterYear]?.url || WAYBACK_YEARS['2026'].url)
+      : TILE_LAYERS.dark.url;
+    const afterTile = L.tileLayer(afterTileUrl, {
+      attribution: 'Esri World Imagery (' + afterYear + ')',
+      maxZoom: 19,
+      opacity: layerOpacity
+    }).addTo(map);
+    singleAfterTileRef.current = afterTile;
 
     singleLabelsRef.current = createLabelsLayers(map, baseMapType === 'esri');
 
@@ -183,11 +276,12 @@ export const MapView: React.FC<MapViewProps> = ({
       map.remove();
       singleMapRef.current = null;
       singleBaseTileRef.current = null;
+      singleAfterTileRef.current = null;
       singleLabelsRef.current = [];
     };
   }, [mapLayout]);
 
-  // 2. Initialize Dual Maps (Synced Pan & Zoom with Place Labels)
+  // 2. Initialize Dual Maps (Synced Pan & Zoom with Historical vs Current Tiles)
   useEffect(() => {
     if (mapLayout !== 'dual') return;
     if (!leftMapContainerRef.current || !rightMapContainerRef.current) return;
@@ -197,7 +291,7 @@ export const MapView: React.FC<MapViewProps> = ({
       return;
     }
 
-    // Left Map (Before Baseline)
+    // Left Map (Genuine Historical Baseline from Esri Wayback)
     const mapLeft = L.map(leftMapContainerRef.current, {
       center: center,
       zoom: 14,
@@ -206,8 +300,11 @@ export const MapView: React.FC<MapViewProps> = ({
 
     setupCustomPanes(mapLeft);
 
-    const leftBase = L.tileLayer(TILE_LAYERS[baseMapType].url, {
-      attribution: TILE_LAYERS[baseMapType].attribution,
+    const leftUrl = baseMapType === 'esri'
+      ? (WAYBACK_YEARS[beforeYear]?.url || WAYBACK_YEARS['2016'].url)
+      : TILE_LAYERS.dark.url;
+    const leftBase = L.tileLayer(leftUrl, {
+      attribution: 'Esri Wayback Historical Archive (' + (WAYBACK_YEARS[beforeYear]?.date || beforeYear) + ')',
       maxZoom: 19
     }).addTo(mapLeft);
     leftBaseTileRef.current = leftBase;
@@ -219,7 +316,7 @@ export const MapView: React.FC<MapViewProps> = ({
     leftDrawGroupRef.current = leftGroup;
     leftMapRef.current = mapLeft;
 
-    // Right Map (Current + Change Polygons)
+    // Right Map (Current 2026 + Change Polygons)
     const mapRight = L.map(rightMapContainerRef.current, {
       center: center,
       zoom: 14,
@@ -228,8 +325,11 @@ export const MapView: React.FC<MapViewProps> = ({
 
     setupCustomPanes(mapRight);
 
-    const rightBase = L.tileLayer(TILE_LAYERS[baseMapType].url, {
-      attribution: TILE_LAYERS[baseMapType].attribution,
+    const rightUrl = baseMapType === 'esri'
+      ? (WAYBACK_YEARS[afterYear]?.url || WAYBACK_YEARS['2026'].url)
+      : TILE_LAYERS.dark.url;
+    const rightBase = L.tileLayer(rightUrl, {
+      attribution: 'Esri World Imagery (' + (WAYBACK_YEARS[afterYear]?.date || afterYear) + ')',
       maxZoom: 19
     }).addTo(mapRight);
     rightBaseTileRef.current = rightBase;
@@ -264,20 +364,29 @@ export const MapView: React.FC<MapViewProps> = ({
     };
   }, [mapLayout]);
 
-  // 3. Update Base Layer Tile and Labels across active maps
+  // 3. Update Base Layer Tile and Labels across active maps when year or basemap type changes
   useEffect(() => {
-    const tileConfig = TILE_LAYERS[baseMapType];
+    const isEsri = baseMapType === 'esri';
+    const leftUrl = isEsri
+      ? (WAYBACK_YEARS[beforeYear]?.url || WAYBACK_YEARS['2016'].url)
+      : TILE_LAYERS.dark.url;
+    const rightUrl = isEsri
+      ? (WAYBACK_YEARS[afterYear]?.url || WAYBACK_YEARS['2026'].url)
+      : TILE_LAYERS.dark.url;
+
     if (singleBaseTileRef.current) {
-      singleBaseTileRef.current.setUrl(tileConfig.url);
+      singleBaseTileRef.current.setUrl(leftUrl);
+    }
+    if (singleAfterTileRef.current) {
+      singleAfterTileRef.current.setUrl(rightUrl);
     }
     if (leftBaseTileRef.current) {
-      leftBaseTileRef.current.setUrl(tileConfig.url);
+      leftBaseTileRef.current.setUrl(leftUrl);
     }
     if (rightBaseTileRef.current) {
-      rightBaseTileRef.current.setUrl(tileConfig.url);
+      rightBaseTileRef.current.setUrl(rightUrl);
     }
 
-    const isEsri = baseMapType === 'esri';
     singleLabelsRef.current.forEach((layer, idx) => {
       layer.setOpacity(isEsri ? (idx === 1 ? 0.9 : 1.0) : 0);
     });
@@ -287,7 +396,7 @@ export const MapView: React.FC<MapViewProps> = ({
     rightLabelsRef.current.forEach((layer, idx) => {
       layer.setOpacity(isEsri ? (idx === 1 ? 0.9 : 1.0) : 0);
     });
-  }, [baseMapType]);
+  }, [baseMapType, beforeYear, afterYear]);
 
   // 4. Update Bounds & Raster Image Overlays (Single Map)
   useEffect(() => {
@@ -342,6 +451,9 @@ export const MapView: React.FC<MapViewProps> = ({
     }
     if (singleAfterOverlayRef.current) {
       singleAfterOverlayRef.current.setOpacity(layerOpacity);
+    }
+    if (singleAfterTileRef.current) {
+      singleAfterTileRef.current.setOpacity(layerOpacity);
     }
   }, [layerOpacity, mapLayout]);
 
@@ -665,33 +777,27 @@ export const MapView: React.FC<MapViewProps> = ({
           </button>
         </div>
 
-        {/* Center: Live 2021 vs Current Layer Slider (Single Map Mode) or Location Name (Dual Map Mode) */}
+        {/* Center: Live Baseline vs Current Layer Slider (Single Map Mode) or Location Name (Dual Map Mode) */}
         {mapLayout === 'single' ? (
-          hasImageryOverlay ? (
-            <div className="layer-crossfade-bar">
-              <span className="fade-label before">2021 Baseline</span>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.05"
-                value={layerOpacity}
-                onChange={(e) => setLayerOpacity(parseFloat(e.target.value))}
-                className="gis-layer-range"
-                title="Slide to cross-fade between 2021 and Current satellite imagery at exact bounds"
-              />
-              <span className="fade-label after">Current ({Math.round(layerOpacity * 100)}%)</span>
-            </div>
-          ) : (
-            <div className="layer-crossfade-bar" style={{ opacity: 0.85, fontSize: '0.78rem', color: '#94a3b8' }}>
-              <span>Live Basemap: {baseMapType === 'esri' ? 'ESRI World Imagery' : 'CartoDB Dark'}</span>
-            </div>
-          )
+          <div className="layer-crossfade-bar">
+            <span className="fade-label before">{beforeYear} Baseline</span>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.05"
+              value={layerOpacity}
+              onChange={(e) => setLayerOpacity(parseFloat(e.target.value))}
+              className="gis-layer-range"
+              title="Slide to cross-fade between baseline and current satellite imagery at exact bounds"
+            />
+            <span className="fade-label after">{afterYear} Current ({Math.round(layerOpacity * 100)}%)</span>
+          </div>
         ) : (
           <div className="gis-header-location-pill" title={`Selected Location: ${displayLocation}`}>
             <MapPin size={13} color="#00e5ff" />
             <span className="location-pill-prefix">Location:</span>
-            <span className="location-pill-name">{displayLocation}</span>
+            <span className="location-pill-name">{displayLocation} ({beforeYear} vs {afterYear})</span>
           </div>
         )}
 
@@ -758,10 +864,26 @@ export const MapView: React.FC<MapViewProps> = ({
         <div ref={singleMapContainerRef} className="map-viewport" style={{ height: '510px' }} />
       ) : (
         <div className="dual-map-split-container" style={{ height: '510px' }}>
-          {/* Left: 2021 Baseline Map */}
+          {/* Left: Historical Baseline Map (Esri Wayback) */}
           <div className="dual-map-half left">
             <div className="dual-map-label before">
-              <span className="label-title">🛰️ Before: 2021 Baseline</span>
+              <span className="label-title">
+                🛰️ Before:
+                <select
+                  value={beforeYear}
+                  onChange={(e) => setBeforeYear(e.target.value)}
+                  className="gis-year-select"
+                  title="Select historical baseline satellite imagery year"
+                >
+                  <option value="2014">2014 Baseline</option>
+                  <option value="2016">2016 Baseline</option>
+                  <option value="2018">2018 Baseline</option>
+                  <option value="2020">2020 Baseline</option>
+                  <option value="2021">2021 Baseline</option>
+                  <option value="2023">2023 Baseline</option>
+                  <option value="2024">2024 Baseline</option>
+                </select>
+              </span>
               <span className="label-subloc" title={displayLocation}>📍 {displayLocation}</span>
             </div>
             <div ref={leftMapContainerRef} className="map-viewport-half" />
@@ -770,7 +892,7 @@ export const MapView: React.FC<MapViewProps> = ({
           {/* Right: Current Map + Change Polygons */}
           <div className="dual-map-half right">
             <div className="dual-map-label after">
-              <span className="label-title">🛰️ After: Current + Change Polygons</span>
+              <span className="label-title">🛰️ After: 2026 (Current) + Change Polygons</span>
               <span className="label-subloc" title={displayLocation}>📍 {displayLocation}</span>
             </div>
             <div ref={rightMapContainerRef} className="map-viewport-half" />

@@ -59,7 +59,7 @@ export const ChangeTimeline: React.FC<ChangeTimelineProps> = ({
         <div className="timeline-title-group">
           <div className="timeline-title-row">
             <Clock size={16} color="#00e5ff" />
-            <span className="timeline-title">2021 → Present Change Timeline</span>
+            <span className="timeline-title">Historical → Present Change Timeline</span>
             {isCustomArea && <span className="custom-roi-pill">Custom ROI</span>}
           </div>
           <span className="timeline-subtitle">Multi-temporal Earth Observation Progression</span>

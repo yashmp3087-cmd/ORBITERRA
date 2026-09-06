@@ -16,10 +16,11 @@ LOCATION_HISTORIES = {
         "latitude": 18.5204,
         "longitude": 73.8567,
         "timeline": [
-            {"date": "2021-03", "change_type": "Baseline Survey", "area_hectares": 0.0, "confidence": 0.96, "notes": "Optical baseline reference acquisition for Pune metropolitan sector"},
+            {"date": "2016-04", "change_type": "Baseline Survey", "area_hectares": 0.0, "confidence": 0.98, "notes": "Esri Wayback historical archive reference capture for Pune metropolitan sector"},
+            {"date": "2021-03", "change_type": "Urban Expansion", "area_hectares": 8.4, "confidence": 0.94, "notes": "Metropolitan fringe growth and tech park infrastructure"},
             {"date": "2022-05", "change_type": "Infrastructure Expansion", "area_hectares": 5.2, "confidence": 0.92, "notes": "Transit link and arterial corridor grading"},
             {"date": "2023-09", "change_type": "New Construction", "area_hectares": 11.4, "confidence": 0.94, "notes": "Commercial tech development and built-up structures"},
-            {"date": "2024-03", "change_type": "New Construction", "area_hectares": 14.2, "confidence": 0.95, "notes": "Active urban built-up expansion"}
+            {"date": "2026-03", "change_type": "New Construction", "area_hectares": 14.2, "confidence": 0.95, "notes": "Active urban built-up expansion"}
         ],
         "summary_chart_data": [
             {"period": "2021-Q1", "built_up_area_ha": 8.5, "vegetation_cover_ha": 28.0, "bare_soil_ha": 12.0},
@@ -154,8 +155,8 @@ def get_2021_to_current_timeline(loc_key: str = "LOC_BLR", custom_bbox: List[flo
     data = LOCATION_HISTORIES[loc_upper]
     raw_timeline = data.get("timeline", [])
     
-    # Filter from 2021 onward
-    filtered = [evt for evt in raw_timeline if evt["date"] >= "2021-01"]
+    # Filter from 2016 baseline onward
+    filtered = [evt for evt in raw_timeline if evt["date"] >= "2016-01"]
     
     # Enrich with badge color and custom indicator
     enriched = []

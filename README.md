@@ -25,9 +25,13 @@ Earth Observation satellites (Sentinel-2, Landsat, Cartosat) capture terabytes o
 - **Multi-Temporal Differential Analysis:** Compares co-registered satellite image pairs across distinct timestamps ($T_1$ vs $T_2$) using adaptive morphological differencing and spectral index analysis ($\Delta\text{NDVI}$, $\Delta\text{NDBI}$, $\Delta\text{NDWI}$).
 - **Custom ROI Drawing on Live Map:** Draw custom rectangles or polygons directly on the GIS map to define any Region of Interest (ROI) with automatic GeoJSON clipping and AI re-analysis.
 - **True Georeferenced Satellite Imagery:** Displays high-resolution ESRI World Imagery base tiles with Sentinel-2 multi-temporal scenes georeferenced at exact WGS84 lat/lng bounds.
-- **Dual-Map Synchronized Split Screen & Cross-Fade:** Compare 2021 baseline vs current satellite raster layers side-by-side with locked pan/zoom synchronization, or blend them dynamically with a live opacity slider.
+- **Dual-Map Synchronized Split Screen & Cross-Fade:** Compare historical baseline (2014, 2016, 2018, 2021, etc.) vs current 2026 satellite raster layers side-by-side with locked pan/zoom synchronization, or blend them dynamically with a live opacity slider.
+- **Real Historical Satellite Tile Architecture (Esri Wayback Archive):**
+  - **Before (Historical Baseline)**: Powered by Esri's Wayback Imagery service (`wayback.maptiles.arcgis.com`) serving archived satellite captures by capture date (e.g., 2014, 2016, 2018, 2020, 2021, 2023, 2024) selected dynamically via the map header dropdown.
+  - **After (Current State)**: Powered by the latest 2026 Esri World Imagery release (`release_id=26334`), rendering real, visible urban development, building growth, and road networks.
+  - **Reference Labels**: Crisp place names, administrative boundaries, and highways overlaid on both panels via Esri's `World_Boundaries_and_Places` and `World_Transportation`.
 - **Direct GPS Deep-Links:** Real-time computation of selection centroid with one-click direct deep-links to **Google Maps** (`z=16`) and **Google Earth 3D Web**, plus one-click coordinate clipboard copy.
-- **2021-to-Current Timeline Stepper:** Chronological progression tracking change events, acreage impact, and detection confidence from 2021 through the present.
+- **Historical-to-Current Timeline Stepper:** Chronological progression tracking change events, acreage impact, and detection confidence from baseline surveys through the present.
 - **Automated Polygon Vectorization & Classification:** Converts pixel contours directly into real-world geographic coordinates (GeoJSON FeatureCollections), categorized into **New Construction**, **Vegetation Loss**, **Water Body Shrinkage**, and **Road Development**.
 
 ---

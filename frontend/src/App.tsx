@@ -49,8 +49,8 @@ export const App: React.FC = () => {
       id: 'COMP_PUNE_DEFAULT',
       location_id: 'LOC_PUNE',
       location_name: 'Pune, Maharashtra',
-      image_id_before: '2021 Baseline',
-      image_id_after: 'Current Live Imagery',
+      image_id_before: '2016 Baseline (Wayback)',
+      image_id_after: '2026 Current (World Imagery)',
       image_before_url: '',
       image_after_url: '',
       mask_url: '',
@@ -152,11 +152,12 @@ export const App: React.FC = () => {
       location_name: 'Pune, Maharashtra',
       latitude: 18.5204,
       longitude: 73.8567,
-      total_historical_events: 3,
+      total_historical_events: 4,
       timeline: [
-        { date: '2021-03', change_type: 'Baseline Survey', area_hectares: 0.0, confidence: 0.96, notes: 'Optical multispectral reference acquisition for Pune metropolitan sector' },
-        { date: '2023-04', change_type: 'Road Development', area_hectares: 6.5, confidence: 0.91, notes: 'Transit corridor and arterial road expansion' },
-        { date: '2024-03', change_type: 'New Construction', area_hectares: 14.2, confidence: 0.95, notes: 'Active commercial & residential built-up development' }
+        { date: '2016-04', change_type: 'Baseline Survey', area_hectares: 0.0, confidence: 0.98, notes: 'Esri Wayback historical archive reference capture for Pune metropolitan sector' },
+        { date: '2021-03', change_type: 'Urban Expansion', area_hectares: 8.4, confidence: 0.94, notes: 'Metropolitan fringe growth and tech park infrastructure' },
+        { date: '2023-04', change_type: 'Road Development', area_hectares: 6.5, confidence: 0.91, notes: 'Transit corridor and arterial ring road expansion' },
+        { date: '2026-03', change_type: 'New Construction', area_hectares: 14.2, confidence: 0.95, notes: 'Active commercial & high-density residential built-up development' }
       ],
       summary_chart_data: []
     });
